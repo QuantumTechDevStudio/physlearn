@@ -20,7 +20,9 @@ def optimize(func, dim, sigma, amount_of_vectors, max_iters, alpha, x0=None, min
         sum_vector = numpy.zeros_like(x)
         for vector in random_vectors:
             sum_vector += vector * func(x + vector)
-        gradient = sum_vector / amount_of_vectors
+        #print(sum_vector / amount_of_vectors)
+        gradient = (1 / (sigma ** 2)) * sum_vector / amount_of_vectors
+        #print(gradient)
         x -= alpha * gradient
         cost_list.append(func(x))
     return cost_list, x

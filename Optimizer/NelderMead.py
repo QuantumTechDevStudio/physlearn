@@ -3,7 +3,7 @@ from physlearn.Optimizer import NelderMeadUtil
 from tqdm import tqdm
 
 
-def optimize(func, dim, end_cond, min_element=-1, max_element=1, end_method='variance', alpha=1, beta=0.5, gamma=2):
+def optimize(func, dim, end_cond, min_element=-1, max_element=1, end_method='max_iter', alpha=1, beta=0.5, gamma=2):
     # func - оптимизируемая функция, должна принимать numpy.array соотвесвтующей размерности в качесвте параметра
     # dim - размерность функции
     # end_method - условие останова
