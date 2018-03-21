@@ -139,6 +139,12 @@ class NeuralNetAbstract:
         # Инициализация начальных параметров
         self.sess.run(self.init)
 
+    def return_graph(self):
+        return self.output
+
+    def return_session(self):
+        return self.sess
+
     def unroll_matrixes(self):
         # Данная функция "разворачивает" все матрицы в один вектор строку
         pass
