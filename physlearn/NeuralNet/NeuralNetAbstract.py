@@ -1,3 +1,5 @@
+import xml.etree.ElementTree as Tree
+
 import numpy
 import tensorflow as tf
 
@@ -16,8 +18,15 @@ class NeuralNetAbstract:
     train_type = ""  # Тип обучения
     size_list = []  # Размеры матриц весов и векторов сдвига
     unroll_breaks = [(0, 0)]  # Индексы концов каждой матрицы в unroll векторе
-    amount_of_outputs = None
-    output_activation_func = None
+    amount_of_outputs = None  # Количество выходов
+    output_activation_func = None  # Функция активации выходов
+    # Минмальный и максимальные элементы, которые могут быть сгенерированны при случайной инициализации матриц весов
+    min_element = -1
+    max_element = 1
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ----------------------------------Здесь задаются стандартные функции активации---------------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
 
     # Просто тождественная функция
     @staticmethod
@@ -28,7 +37,11 @@ class NeuralNetAbstract:
     def sigmoid(x):
         return tf.sigmoid(x)
 
-    def __init__(self, min_element, max_element):
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # -------------------------------------------------Конструктор---------------------------------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    def __init__(self, min_element=-1, max_element=1):
         # Присваивание значений, сброс к начальным условиям
         self.min_element = min_element
         self.max_element = max_element
@@ -38,11 +51,18 @@ class NeuralNetAbstract:
         self.size_list = []
         self.unroll_breaks = [(0, 0)]
 
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # -------------------------------------Методы, которые задают архитектуру НС-------------------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
     def add(self, amount_of_units, activation_func):
         # Добавление еще одного слоя в НС
         # Слой добавляется в self.design в необходимом формате
         current_layer = (amount_of_units, activation_func)
         self.design.append(current_layer)
+
+    def add_layer_ex(self):
+        pass
 
     def add_input_layer(self, amount_of_units):
         # Добавление входного слоя
@@ -54,18 +74,31 @@ class NeuralNetAbstract:
         self.amount_of_outputs = amount_of_units
         self.output_activation_func = output_activation_func
 
-    def create_tf_matrixes(self):
-        # Данный метод создает матрицы в формате tf.placeholder
-        return []
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ------------------------------------------Загрузка НС из файла-------------------------------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
 
-    def create_layer_matrixes(self, size):
-        # Создаем numpy матрицы слоя
-        weight_matrix = numpy.random.uniform(self.min_element, self.max_element, size)
-        # Вектор сдвига (bias) должен иметь строк столько же, сколько матрица весов (weight_matrix), и один столбец
-        # (см. "Broadcast")
-        bias_vector = numpy.random.uniform(self.min_element, self.max_element, (size[0], 1))
-        self.size_list.append((weight_matrix.shape, bias_vector.shape))
-        return weight_matrix, bias_vector
+    def load_net_from_file(self, filename):
+        func_dict = {'sigmoid': self.sigmoid, 'linear': self.linear}
+        net_xml = Tree.parse(filename)
+        net_root = net_xml.getroot()
+        for layer in net_root:
+            layer_type = layer.tag
+            if layer_type == 'input_layer':
+                amount_of_neurons = int(layer.attrib['amount_of_neurons'])
+                self.add_input_layer(amount_of_neurons)
+            elif layer_type == 'output_layer':
+                amount_of_neurons = int(layer.attrib['amount_of_neurons'])
+                activation_func = layer.attrib['activation']
+                self.add_output_layer(amount_of_neurons, func_dict[activation_func])
+            else:
+                amount_of_neurons = int(layer.attrib['amount_of_neurons'])
+                activation_func = layer.attrib['activation']
+                self.add(amount_of_neurons, func_dict[activation_func])
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # --------------------------------Создание графа TF и все необходимые для этого методы --------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
 
     def compile(self):
         # Здесь создается граф вычислений НС
@@ -100,8 +133,18 @@ class NeuralNetAbstract:
             self.tf_layers.append(current_layer)
         self.output = self.tf_layers[-1]  # Выход нейронной сети - это последний слой => послдений элемент tf_layers
 
+    def create_tf_matrixes(self):
+        # Данный метод создает матрицы в формате tf.placeholder
+        return []
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ---------------------------------------Методы, вычисляющие значение НС------------------------------------------ #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
     def calc(self, calc_var, d):
         # Данный метод проводит вычисление TF величины calc_var с параметрами d
+        # calc_var - TF Tensor
+        # d - словарь, такого типа, который требуется в sess.run
         return []
 
     def run(self, inputs):
@@ -109,6 +152,10 @@ class NeuralNetAbstract:
         # inputs = numpy.array([[...], ...])
         result = self.calc(self.output, {self.x: inputs})
         return result
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # --------------------------Методы, упрощающие работу со стнадартными ценовыми функциями-------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
 
     def set_train_type(self, train_type):
         # В данной функции устанавливается тип обучения и выражение для вычисления ценовой функции
@@ -135,15 +182,34 @@ class NeuralNetAbstract:
 
         return self.calc(self.cost, {self.x: x, self.y: y})  # Возвращаем вычисленное значение ценовой функции
 
-    def init_params(self):
-        # Инициализация начальных параметров
-        self.sess.run(self.init)
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ------------------------------------Методы, возвращающие различные параметры НС--------------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
 
     def return_graph(self):
+        # Возвращает TF Tensor, отвечающий выходному слою
         return self.output
 
     def return_session(self):
+        # Возвращет TF session
         return self.sess
+
+    def return_unroll_dim(self):
+        # Возвращает размерность "развернутого" вектора
+        return self.unroll_breaks[-1][-1]
+
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # ----------------------------------Методы, проводящие манипуляции с матрицами весов------------------------------ #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    def create_layer_matrixes(self, size):
+        # Создаем numpy матрицы слоя
+        weight_matrix = numpy.random.uniform(self.min_element, self.max_element, size)
+        # Вектор сдвига (bias) должен иметь строк столько же, сколько матрица весов (weight_matrix), и один столбец
+        # (см. "Broadcast")
+        bias_vector = numpy.random.uniform(self.min_element, self.max_element, (size[0], 1))
+        self.size_list.append((weight_matrix.shape, bias_vector.shape))
+        return weight_matrix, bias_vector
 
     def unroll_matrixes(self):
         # Данная функция "разворачивает" все матрицы в один вектор строку
@@ -166,6 +232,14 @@ class NeuralNetAbstract:
             tf_matrixes.append((weight_matrix, bias_vector))
         self.assign_matrixes(tf_matrixes)
 
+    # ---------------------------------------------------------------------------------------------------------------- #
+    # --------------------------------------------------Прочее-------------------------------------------------------- #
+    # ---------------------------------------------------------------------------------------------------------------- #
+
+    def init_params(self):
+        # Инициализация начальных параметров
+        self.sess.run(self.init)
+
     @staticmethod
     def create_unroll_vector(numpy_matrixes):
         # Данный метод "разворачивает" матрицы в один вектор строку
@@ -176,6 +250,3 @@ class NeuralNetAbstract:
             unroll_vector = numpy.append(unroll_vector, weight_matrix)
             unroll_vector = numpy.append(unroll_vector, bias_vector)
         return unroll_vector
-
-    def return_unroll_dim(self):
-        return self.unroll_breaks[-1][-1]
