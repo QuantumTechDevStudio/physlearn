@@ -8,5 +8,6 @@ setup(
     license='GNU',
     author='andrey',
     author_email='abdrey21and@gmail.com',
-    description='A simple machine learning library'
+    description='A simple machine learning library',
+    install_requires=['numpy', ]
 )

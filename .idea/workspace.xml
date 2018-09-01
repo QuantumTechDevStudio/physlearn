@@ -2,19 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70c0c9da-4172-439e-a4f3-2c6e182a2359" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadNew.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQGNew.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/OptimizeResult.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/DETest.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolutianNew.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolutianNew.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolution.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolutionAbstract.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolutionAbstract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolutionEx.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolutionEx.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMeadUtil.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMeadWQG.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQG.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/setup.py" beforeDir="false" afterPath="$PROJECT_DIR$/setup.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -27,28 +18,29 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="1" />
+          <entry key="project.open.time.20" value="1" />
           <entry key="project.open.time.21" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="13" />
+          <entry key="py" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="13" />
+          <entry key="Python" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="2135" />
+          <entry key="py" value="2165" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="2135" />
+          <entry key="Python" value="2165" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -58,7 +50,26 @@
     <favorites_list name="physlearn" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/setup.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -69,7 +80,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/physlearn" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -77,10 +88,11 @@
         <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMeadAbstract.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/__init__.py" />
-        <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/OptimizeResult.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadUtil.py" />
+        <option value="$PROJECT_DIR$/setup.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" />
       </list>
     </option>
   </component>
@@ -133,6 +145,13 @@
               <item name="Optimizer" type="462c0819:PsiDirectoryNode" />
               <item name="DiffernetiaEvolution" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="physlearn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="physlearn" type="462c0819:PsiDirectoryNode" />
+              <item name="physlearn" type="462c0819:PsiDirectoryNode" />
+              <item name="Optimizer" type="462c0819:PsiDirectoryNode" />
+              <item name="NelderMead" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -144,7 +163,7 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -189,7 +208,7 @@
   <component name="ToolWindowManager">
     <frame x="0" y="-1" width="1920" height="1053" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919742" visible="true" weight="0.25987193" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919742" visible="true" weight="0.26254" />
       <window_info id="Structure" order="1" sideWeight="0.5008026" side_tool="true" weight="0.25987193" />
       <window_info id="Favorites" order="2" sideWeight="0.5008026" side_tool="true" weight="0.25987193" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -218,23 +237,17 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/physlearn" />
+    </ignored-roots>
+  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/DETest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/DETest.py" />
     <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="3" column="102" selection-start-line="3" selection-start-column="102" selection-end-line="3" selection-end-column="102" />
-          <folding>
-            <element signature="e#0#96#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -242,13 +255,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/setup.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="51" selection-start-line="10" selection-start-column="51" selection-end-line="10" selection-end-column="51" />
         </state>
       </provider>
     </entry>
@@ -269,39 +275,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadUtil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadUtil.py" />
     <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadNew.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolutionEx.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-822">
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-822" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolution.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-450">
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
+        <state relative-caret-position="-450" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution/DifferentialEvolutionAbstract.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-327" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="31" selection-start-line="11" selection-start-column="31" selection-end-line="11" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
       </provider>
     </entry>
   </component>
