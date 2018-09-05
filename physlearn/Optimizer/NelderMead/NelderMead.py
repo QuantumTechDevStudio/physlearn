@@ -8,4 +8,3 @@ class NelderMead(NelderMeadAbstract):
 
     def calc_func(self, params):
         return self.func(params)
-

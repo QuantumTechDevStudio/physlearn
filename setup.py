@@ -2,12 +2,13 @@ from setuptools import setup
 
 setup(
     name='physlearn',
-    version='1.0.6',
-    packages=['physlearn', 'physlearn.examples', 'physlearn.NeuralNet', 'physlearn.Optimizer'],
-    url='https://github.com/aeDeaf/physlearn',
-    license='GNU',
+    version='1.1.2',
+    packages=['', 'physlearn', 'physlearn.examples', 'physlearn.NeuralNet', 'physlearn.Optimizer',
+              'physlearn.Optimizer.NelderMead', 'physlearn.Optimizer.DifferentialEvolution'],
+    url='https://github.com/QuantumTechDevStudio/physlearn',
+    license='BSD',
     author='andrey',
-    author_email='abdrey21and@gmail.com',
+    author_email='andrey21and@gmail.com',
     description='A simple machine learning library',
-    install_requires=['numpy', ]
+    install_requires=['numpy', 'tensorflow']
 )

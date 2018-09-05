@@ -1,5 +1,6 @@
 import sys
 import time
+import math
 
 import numpy
 
@@ -33,6 +34,10 @@ class NelderMeadAbstract:
     dot_str = ''
     print_str = ''
     start_time = 0
+    speed = 0
+    percent_done = 0
+    update_pb_iter = 1000
+    amount_of_dots = 0
 
     def __init__(self, min_element=-1, max_element=1):
         self.min_element = min_element
@@ -96,8 +101,14 @@ class NelderMeadAbstract:
         self.start_time = time.time()  # Время начала работы
         self.print_str = ''
         for i in range(end_cond):
+            if i != 0:
+                cur_time = time.time()
+                delta = cur_time - self.start_time
+                self.speed = i / delta
+                self.update_pb_iter = math.ceil(self.speed * 1)
+                self.percent_done = math.floor(i * 100 / end_cond)
 
-            if (i % 1000) == 0:
+            if (i % self.update_pb_iter) == 0:
                 self.update_progress_bar(i)
 
             if (i % self.update_iter) == 0:
@@ -130,22 +141,23 @@ class NelderMeadAbstract:
 
         end_time = time.time()
         total_time = end_time - self.start_time
+        self.percent_done = math.floor(amount_of_iterations * 100 / end_cond)
+        self.update_progress_bar(amount_of_iterations)
         _, _, l_index = self.find_points()  # Определяем точку с нименьшим значением функции
-        result = OptimizeResult(is_converged, amount_of_iterations, total_time, self.cost_list, exit_code, reason_of_break,
-                                self.x_points[l_index])
+        result = OptimizeResult(is_converged, amount_of_iterations, total_time, self.cost_list, exit_code,
+                                reason_of_break, self.x_points[l_index])
         return result
 
     def update_progress_bar(self, i):
-        cur_time = time.time()
-        delta = cur_time - self.start_time
-        speed = i / delta
         eraser = ''.ljust(len(self.print_str))
         sys.stderr.write('\r' + eraser)
-        if (i % 4000) == 0:
+        if self.amount_of_dots == 4:
             self.dot_str = ''
+            self.amount_of_dots = 0
         self.dot_str += '.'
-        speed_str = '{:.3f}'.format(speed)
-        self.print_str = self.dot_str.ljust(5) + str(i) + ' ' + speed_str + ' it\s'
+        self.amount_of_dots += 1
+        speed_str = '{:.3f}'.format(self.speed)
+        self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(self.percent_done) + '%) ' + speed_str + ' it\s'
         sys.stderr.write('\r' + self.print_str)
 
     def iteration(self):
