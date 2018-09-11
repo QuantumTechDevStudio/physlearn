@@ -39,6 +39,9 @@ class NelderMeadAbstract:
     update_pb_iter = 1000
     amount_of_dots = 0
 
+    epsilon = 0.5
+    search_depth = 100
+
     def __init__(self, min_element=-1, max_element=1):
         self.min_element = min_element
         self.max_element = max_element
@@ -48,6 +51,7 @@ class NelderMeadAbstract:
         self.method_types = [0, 0, 0, 0]
         self.types_list = []
         self.cost_list = []
+        self.variance_list = []
 
     # Метод, который обновляет сетку
     def update(self):
@@ -59,6 +63,10 @@ class NelderMeadAbstract:
         self.beta = beta
         self.gamma = gamma
 
+    def set_epsilon_and_sd(self, epsilon, search_depth):
+        self.epsilon = epsilon
+        self.search_depth = search_depth
+
     # Метод, который вычисляет значение функции от параметров params
     def calc_func(self, params):
         return []
@@ -68,7 +76,7 @@ class NelderMeadAbstract:
         self.update_func = update_func
         self.update_iter = update_iter
 
-    def optimize(self, func, dim, end_cond, min_cost=1e-5, alpha=0.5):
+    def optimize(self, func, dim, end_cond, min_cost=1e-5):
         # func - оптимизируемая функция, должна принимать numpy.array соотвесвтующей размерности в качесвте параметра
         # dim - размерность функции
         # end_method - условие останова
@@ -105,7 +113,7 @@ class NelderMeadAbstract:
                 cur_time = time.time()
                 delta = cur_time - self.start_time
                 self.speed = i / delta
-                self.update_pb_iter = math.ceil(self.speed * 1)
+                self.update_pb_iter = math.floor(self.speed * 1)
                 self.percent_done = math.floor(i * 100 / end_cond)
 
             if (i % self.update_pb_iter) == 0:
@@ -115,6 +123,7 @@ class NelderMeadAbstract:
                 self.update()
 
             method_type = self.iteration()
+            self.variance_list.append(numpy.var(self.y_points))
             self.types_list.append(method_type)
             cur_cost = numpy.min(self.y_points)
             self.cost_list.append(cur_cost)
@@ -125,9 +134,9 @@ class NelderMeadAbstract:
                 is_converged = True
                 break
             self.method_types[method_type] += 1
-            last_method_types = self.types_list[-10:]
-            bad_variant_percent = last_method_types.count(3) / 10
-            if bad_variant_percent > alpha:
+            last_method_types = self.types_list[-self.search_depth:]
+            bad_variant_percent = last_method_types.count(3) / self.search_depth
+            if bad_variant_percent >= self.epsilon:
                 reason_of_break = 'Local minimum reached'
                 exit_code = 1
                 amount_of_iterations = i

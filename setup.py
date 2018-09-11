@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='physlearn',
-    version='1.1.2',
+    version='1.2.0',
     packages=['', 'physlearn', 'physlearn.examples', 'physlearn.NeuralNet', 'physlearn.Optimizer',
               'physlearn.Optimizer.NelderMead', 'physlearn.Optimizer.DifferentialEvolution'],
     url='https://github.com/QuantumTechDevStudio/physlearn',

@@ -5,6 +5,7 @@ from physlearn.NeuralNet.NeuralNetAbstract import NeuralNetAbstract
 
 class NeuralNetPro(NeuralNetAbstract):
     placeholders_dict = {}
+    cost_func = None
 
     def __init__(self, min_element=-1, max_element=1):
         super().__init__(min_element, max_element)
@@ -12,6 +13,7 @@ class NeuralNetPro(NeuralNetAbstract):
     def calc(self, calc_var, d):
         d.update(self.placeholders_dict)  # Добавляем в словарь d placeholder для матриц весов
         return self.sess.run(calc_var, d)
+
 
     def create_tf_matrixes(self):
         tf_matrixes = []

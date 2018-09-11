@@ -3,6 +3,9 @@ import xml.etree.ElementTree as Tree
 import numpy
 import tensorflow as tf
 
+from physlearn.Optimizer.NelderMead import NelderMead
+from physlearn.Optimizer.DifferentialEvolution import DifferentialEvolution
+
 
 class NeuralNetAbstract:
     design = []  # Слои нейронной сети в формате (количество нейронов, функция активации)
@@ -23,6 +26,9 @@ class NeuralNetAbstract:
     # Минмальный и максимальные элементы, которые могут быть сгенерированны при случайной инициализации матриц весов
     min_element = -1
     max_element = 1
+
+    cost_func = None
+    optimize_params_dict = {}
 
     # ---------------------------------------------------------------------------------------------------------------- #
     # ----------------------------------Здесь задаются стандартные функции активации---------------------------------- #
@@ -250,3 +256,71 @@ class NeuralNetAbstract:
             unroll_vector = numpy.append(unroll_vector, weight_matrix)
             unroll_vector = numpy.append(unroll_vector, bias_vector)
         return unroll_vector
+
+    def set_cost_func(self, cost_func):
+        self.cost_func = cost_func
+
+    def user_cost(self, params):
+        return self.cost_func(self, params)
+
+    def optimize(self, params_dict, cost_func, end_cond, min_cost):
+        self.set_cost_func(cost_func)
+        method = params_dict['method']
+        dim = self.unroll_breaks[-1][-1]
+        if method == 'nelder-mead':
+            nm = NelderMead()
+            self.parse_nm_params(nm, params_dict)
+
+            res = nm.optimize(self.user_cost, dim, end_cond, min_cost=min_cost)
+        if method == 'diff evolution':
+            de = DifferentialEvolution()
+            f, p = self.parse_de_params(de, dim, params_dict)
+
+            de.set_params(f, p)
+            res = de.optimize(self.user_cost, dim, end_cond, min_cost=min_cost)
+        self.roll_matrixes(res.x)
+        return res
+
+    @staticmethod
+    def parse_de_params(de, dim, optimize_params_dict):
+        if not (optimize_params_dict.get('f') is None):
+            f = optimize_params_dict['f']
+        else:
+            f = de.f
+        if not (optimize_params_dict.get('p') is None):
+            p = optimize_params_dict['p']
+        else:
+            p = de.p
+        if not (optimize_params_dict.get('amount_of_individuals') is None):
+            de.set_amount_of_individuals(optimize_params_dict['amount_of_individuals'])
+        else:
+            de.set_amount_of_individuals(dim * 5)
+        return f, p
+
+    @staticmethod
+    def parse_nm_params(nm, optimize_params_dict):
+        if not (optimize_params_dict.get('alpha') is None):
+            alpha = optimize_params_dict['alpha']
+        else:
+            alpha = nm.alpha
+        if not (optimize_params_dict.get('beta') is None):
+            beta = optimize_params_dict['beta']
+        else:
+            beta = nm.beta
+        if not (optimize_params_dict.get('alpha') is None):
+            gamma = optimize_params_dict['gamma']
+        else:
+            gamma = nm.gamma
+        if not (optimize_params_dict.get('epsilon') is None):
+            epsilon = optimize_params_dict['epsilon']
+        else:
+            epsilon = nm.epsilon
+        if not (optimize_params_dict.get('search_depth') is None):
+            search_depth = optimize_params_dict['search_depth']
+        else:
+            search_depth = nm.search_depth
+        nm.set_params(alpha, beta, gamma)
+        nm.set_epsilon_and_sd(epsilon, search_depth)
+
+    def set_optimize_params(self, params_dict):
+        self.optimize_params_dict = params_dict
