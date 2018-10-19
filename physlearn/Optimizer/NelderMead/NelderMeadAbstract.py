@@ -1,13 +1,14 @@
+import math
 import sys
 import time
-import math
 
 import numpy
 
-from physlearn.Optimizer.OptimizeResult import OptimizeResult
+from physlearn.Optimizer import OptimizeResult
+from physlearn.Optimizer import OptimizerAbstract
 
 
-class NelderMeadAbstract:
+class NelderMeadAbstract(OptimizerAbstract):
     # Переменные, в которых хранятся точки симплеска и значения функции в них
     x_points = None
     y_points = None
@@ -38,13 +39,15 @@ class NelderMeadAbstract:
     percent_done = 0
     update_pb_iter = 1000
     amount_of_dots = 0
+    current_best_point = None
 
     epsilon = 0.5
     search_depth = 100
 
+    break_point = -1
+
     def __init__(self, min_element=-1, max_element=1):
-        self.min_element = min_element
-        self.max_element = max_element
+        super().__init__(min_element, max_element)
         self.alpha = 1
         self.beta = 0.5
         self.gamma = 2
@@ -52,6 +55,22 @@ class NelderMeadAbstract:
         self.types_list = []
         self.cost_list = []
         self.variance_list = []
+
+    def parse_params(self, params_dict):
+        if not (params_dict.get('alpha') is None):
+            self.alpha = params_dict['alpha']
+
+        if not (params_dict.get('beta') is None):
+            self.beta = params_dict['beta']
+
+        if not (params_dict.get('alpha') is None):
+            self.gamma = params_dict['gamma']
+
+        if not (params_dict.get('epsilon') is None):
+            self.epsilon = params_dict['epsilon']
+
+        if not (params_dict.get('search_depth') is None):
+            self.search_depth = params_dict['search_depth']
 
     # Метод, который обновляет сетку
     def update(self):
@@ -106,18 +125,19 @@ class NelderMeadAbstract:
         # Если update_iter<0 (т.е обновлять сетку не нужно)...
         if self.update_iter < 0:
             self.update_iter = end_cond + 1  # ...присваиваем update_iter значение на 1 больше максимального числа итер.
+
+        exit_point = end_cond
         self.start_time = time.time()  # Время начала работы
+        prev_update_time = 0
         self.print_str = ''
         for i in range(end_cond):
-            if i != 0:
-                cur_time = time.time()
+            cur_time = time.time()
+            if (cur_time - prev_update_time) >= 1:
                 delta = cur_time - self.start_time
                 self.speed = i / delta
-                self.update_pb_iter = math.floor(self.speed * 1)
                 self.percent_done = math.floor(i * 100 / end_cond)
-
-            if (i % self.update_pb_iter) == 0:
                 self.update_progress_bar(i)
+                prev_update_time = cur_time
 
             if (i % self.update_iter) == 0:
                 self.update()
@@ -140,13 +160,27 @@ class NelderMeadAbstract:
                 reason_of_break = 'Local minimum reached'
                 exit_code = 1
                 amount_of_iterations = i
+
+                if not is_converged:
+                    print('find minimum')
+
+                    self.break_point = i
+                    exit_point = i + 3000
+                    print(self.break_point, ' ', exit_point)
                 is_converged = True
-                break
+                # break
             if i == (end_cond - 1):
                 reason_of_break = 'Maximum iterations reached'
                 exit_code = -1
                 amount_of_iterations = i + 1
                 is_converged = False
+
+            if i == exit_point:
+                reason_of_break = 'Maximum iterations reached'
+                exit_code = -1
+                amount_of_iterations = i
+                is_converged = False
+                break
 
         end_time = time.time()
         total_time = end_time - self.start_time
@@ -171,6 +205,7 @@ class NelderMeadAbstract:
 
     def iteration(self):
         self.h_index, self.g_index, self.l_index = self.find_points()  # Находим точки h, g и l
+        self.current_best_point = self.x_points[self.l_index]
         self.x_center = self.calculate_center()  # Вычисляем центр масс
         self.x_reflected = self.calculate_reflected_point()  # Вычисляем отраженную
         # точку

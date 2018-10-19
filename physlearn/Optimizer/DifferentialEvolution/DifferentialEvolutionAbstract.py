@@ -5,9 +5,10 @@ import math
 import numpy
 
 from physlearn.Optimizer.OptimizeResult import OptimizeResult
+from physlearn.Optimizer import OptimizerAbstract
 
 
-class DifferentialEvolutionAbstract:
+class DifferentialEvolutionAbstract(OptimizerAbstract):
     amount_of_individuals = None
     f = None
     p = None
@@ -22,8 +23,7 @@ class DifferentialEvolutionAbstract:
     percent_done = 0
 
     def __init__(self, min_element=-1, max_element=1):
-        self.min_element = min_element
-        self.max_element = max_element
+        super().__init__(min_element, max_element)
         self.f = 0.5
         self.p = 0.9
 
@@ -47,6 +47,18 @@ class DifferentialEvolutionAbstract:
 
     def set_end_method(self, end_method):
         self.end_method = end_method
+
+    def parse_params(self, params_dict):
+        if not (params_dict.get('f') is None):
+            self.f = params_dict['f']
+
+        if not (params_dict.get('p') is None):
+            self.p = params_dict['p']
+
+        if not (params_dict.get('amount_of_individuals') is None):
+            self.set_amount_of_individuals(params_dict['amount_of_individuals'])
+        else:
+            self.set_amount_of_individuals(self.dim * 5)
 
     def update(self):
         pass

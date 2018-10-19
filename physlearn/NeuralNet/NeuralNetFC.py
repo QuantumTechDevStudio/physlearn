@@ -14,7 +14,6 @@ class NeuralNetPro(NeuralNetAbstract):
         d.update(self.placeholders_dict)  # Добавляем в словарь d placeholder для матриц весов
         return self.sess.run(calc_var, d)
 
-
     def create_tf_matrixes(self):
         tf_matrixes = []
         for index in range(len(self.design) - 1):

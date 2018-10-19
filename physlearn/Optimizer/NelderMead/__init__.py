@@ -3,3 +3,4 @@ from physlearn.Optimizer.NelderMead.NelderMeadAbstract import NelderMeadAbstract
 from physlearn.Optimizer.NelderMead.NelderMeadNew import NelderMeadNew
 from physlearn.Optimizer.NelderMead.NelderMeadWQG import NelderMeadWQG
 from physlearn.Optimizer.NelderMead.NelderMeadWQGNew import NelderMeadWQGNew
+from physlearn.Optimizer.NelderMead.NelderMead_ctypes import NelderMeadCtypes
