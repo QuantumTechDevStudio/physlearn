@@ -10,7 +10,7 @@ from physlearn.Optimizer.OptimizeResult import OptimizeResult
 
 
 class NelderMeadCtypes(NelderMeadAbstract):
-    lib = ctypes.CDLL('/home/andrey/CLionProjects/NelderMead/library.so')
+    lib = ctypes.CDLL('/home/andrey/CLionProjects/NelderMead2/build/library.so')
 
     c_set_simplex = lib.set_simplex
     c_set_params = lib.set_params

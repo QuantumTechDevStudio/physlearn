@@ -27,10 +27,6 @@ class NelderMeadAbstract(OptimizerAbstract):
     h_index, g_index, l_index = None, None, None
     x_center = None
     x_reflected = None
-    # Функция, которая выполняет обновление сетки
-    update_func = None
-    # Раз в сколько итераций происходит обновление сетки
-    update_iter = 1
     # Переменные необходимые для работы прогресс бара
     dot_str = ''
     print_str = ''
@@ -40,13 +36,14 @@ class NelderMeadAbstract(OptimizerAbstract):
     update_pb_iter = 1000
     amount_of_dots = 0
     current_best_point = None
+    progress_bar = True
 
     epsilon = 0.5
     search_depth = 100
 
     break_point = -1
 
-    def __init__(self, min_element=-1, max_element=1):
+    def __init__(self, min_element=-1, max_element=1, progress_bar=True):
         super().__init__(min_element, max_element)
         self.alpha = 1
         self.beta = 0.5
@@ -55,6 +52,7 @@ class NelderMeadAbstract(OptimizerAbstract):
         self.types_list = []
         self.cost_list = []
         self.variance_list = []
+        self.progress_bar = progress_bar
 
     def parse_params(self, params_dict):
         if not (params_dict.get('alpha') is None):
@@ -72,10 +70,6 @@ class NelderMeadAbstract(OptimizerAbstract):
         if not (params_dict.get('search_depth') is None):
             self.search_depth = params_dict['search_depth']
 
-    # Метод, который обновляет сетку
-    def update(self):
-        pass
-
     # Установка параметров алгоритма
     def set_params(self, alpha, beta, gamma):
         self.alpha = alpha
@@ -89,11 +83,6 @@ class NelderMeadAbstract(OptimizerAbstract):
     # Метод, который вычисляет значение функции от параметров params
     def calc_func(self, params):
         return []
-
-    # Метод, который настривает обновление сетки
-    def set_update_func(self, update_func, update_iter=1):
-        self.update_func = update_func
-        self.update_iter = update_iter
 
     def optimize(self, func, dim, end_cond, min_cost=1e-5):
         # func - оптимизируемая функция, должна принимать numpy.array соотвесвтующей размерности в качесвте параметра
@@ -122,10 +111,6 @@ class NelderMeadAbstract(OptimizerAbstract):
         # Строка с точками для прогресс бара
         self.dot_str = ''
 
-        # Если update_iter<0 (т.е обновлять сетку не нужно)...
-        if self.update_iter < 0:
-            self.update_iter = end_cond + 1  # ...присваиваем update_iter значение на 1 больше максимального числа итер.
-
         exit_point = end_cond
         self.start_time = time.time()  # Время начала работы
         prev_update_time = 0
@@ -138,9 +123,6 @@ class NelderMeadAbstract(OptimizerAbstract):
                 self.percent_done = math.floor(i * 100 / end_cond)
                 self.update_progress_bar(i)
                 prev_update_time = cur_time
-
-            if (i % self.update_iter) == 0:
-                self.update()
 
             method_type = self.iteration()
             self.variance_list.append(numpy.var(self.y_points))
@@ -160,14 +142,8 @@ class NelderMeadAbstract(OptimizerAbstract):
                 reason_of_break = 'Local minimum reached'
                 exit_code = 1
                 amount_of_iterations = i
-
-                if not is_converged:
-                    print('find minimum')
-
-                    self.break_point = i
-                    exit_point = i + 3000
-                    print(self.break_point, ' ', exit_point)
                 is_converged = True
+                break
                 # break
             if i == (end_cond - 1):
                 reason_of_break = 'Maximum iterations reached'
@@ -192,16 +168,17 @@ class NelderMeadAbstract(OptimizerAbstract):
         return result
 
     def update_progress_bar(self, i):
-        eraser = ''.ljust(len(self.print_str))
-        sys.stderr.write('\r' + eraser)
-        if self.amount_of_dots == 4:
-            self.dot_str = ''
-            self.amount_of_dots = 0
-        self.dot_str += '.'
-        self.amount_of_dots += 1
-        speed_str = '{:.3f}'.format(self.speed)
-        self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(self.percent_done) + '%) ' + speed_str + ' it\s'
-        sys.stderr.write('\r' + self.print_str)
+        if self.progress_bar:
+            eraser = ''.ljust(len(self.print_str))
+            sys.stderr.write('\r' + eraser)
+            if self.amount_of_dots == 4:
+                self.dot_str = ''
+                self.amount_of_dots = 0
+            self.dot_str += '.'
+            self.amount_of_dots += 1
+            speed_str = '{:.3f}'.format(self.speed)
+            self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(self.percent_done) + '%) ' + speed_str + ' it\s'
+            sys.stderr.write('\r' + self.print_str)
 
     def iteration(self):
         self.h_index, self.g_index, self.l_index = self.find_points()  # Находим точки h, g и l

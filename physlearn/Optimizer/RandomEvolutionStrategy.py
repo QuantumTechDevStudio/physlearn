@@ -17,11 +17,11 @@ def optimize(func, dim, sigma, amount_of_vectors, max_iters, alpha, x0=None, min
     cost_list = []
     for _ in tqdm(range(max_iters)):
         random_vectors = create_vectors(dim, sigma, amount_of_vectors)
-        sum_vector = numpy.zeros_like(x)
+        sum_list = []
         for vector in random_vectors:
-            sum_vector += vector * func(x + vector)
+            sum_list.append(vector * func(x + vector))
         #print(sum_vector / amount_of_vectors)
-        gradient = (1 / (sigma ** 2)) * sum_vector / amount_of_vectors
+        gradient = numpy.mean(sum_list) / (sigma ** 2)
         #print(gradient)
         x -= alpha * gradient
         cost_list.append(func(x))

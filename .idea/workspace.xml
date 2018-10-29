@@ -2,25 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="70c0c9da-4172-439e-a4f3-2c6e182a2359" name="Default" comment="a lot of changes">
-      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Layer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/MatrixA.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/MatrixBlocks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/MatrixGen.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/Optimizer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/OptimizerAbstract.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Util/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/physlearn/Util/test_functions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Layer/Layer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Layer/LayerBlocks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Layer/LayerFC.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Layer/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/MatrixBlocks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/physlearn/Optimizer/Pauell.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetPro.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetFC.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution/DifferentialEvolutionAbstract.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution/DifferentialEvolutionAbstract.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/physlearn/NeuralNet/NeuralNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/physlearn/NeuralNet/NeuralNet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/physlearn/NeuralNet/NeuralNetPro.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/physlearn/NeuralNet/NeuralNetPro.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/lib/physlearn/Optimizer/NelderMead/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/build/lib/physlearn/Optimizer/NelderMead/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/Layer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/MatrixA.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/MatrixA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/MatrixBlocks.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/MatrixGen.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/MatrixGen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetFC.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/NeuralNet/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/NeuralNet/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadNew.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQG.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQG.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQGNew.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes2.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadCtypes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/physlearn/Optimizer/RandomEvolutionStrategy.py" beforeDir="false" afterPath="$PROJECT_DIR$/physlearn/Optimizer/RandomEvolutionStrategy.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,43 +41,46 @@
     <session id="-1184240609">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="15" />
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.11" value="1" />
-          <entry key="project.open.time.13" value="2" />
+          <entry key="project.closed" value="24" />
+          <entry key="project.open.time.0" value="2" />
+          <entry key="project.open.time.1" value="1" />
+          <entry key="project.open.time.10" value="3" />
+          <entry key="project.open.time.11" value="4" />
+          <entry key="project.open.time.12" value="1" />
+          <entry key="project.open.time.13" value="3" />
           <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.20" value="2" />
+          <entry key="project.open.time.20" value="3" />
           <entry key="project.open.time.21" value="1" />
           <entry key="project.open.time.24" value="1" />
           <entry key="project.open.time.25" value="2" />
           <entry key="project.open.time.27" value="1" />
+          <entry key="project.open.time.32" value="1" />
           <entry key="project.open.time.34" value="2" />
           <entry key="project.open.time.36" value="1" />
-          <entry key="project.opened" value="16" />
+          <entry key="project.opened" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="80" />
+          <entry key="py" value="119" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="80" />
+          <entry key="Python" value="119" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dummy" value="40" />
-          <entry key="py" value="9771" />
+          <entry key="dummy" value="48" />
+          <entry key="py" value="22335" />
           <entry key="txt" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="69" />
-          <entry key="Python" value="9771" />
+          <entry key="PLAIN_TEXT" value="77" />
+          <entry key="Python" value="22335" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -80,94 +92,17 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" column="21" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
+            <state relative-caret-position="774">
+              <caret line="415" column="51" selection-start-line="415" selection-start-column="51" selection-end-line="415" selection-end-column="51" />
               <folding>
-                <element signature="e#0#23#0" expanded="true" />
-                <marker date="1539370967625" expanded="true" signature="130:131" ph="..." />
-                <marker date="1539370967625" expanded="true" signature="130:132" ph="..." />
-                <marker date="1539370967625" expanded="true" signature="169:178" ph="..." />
-                <marker date="1539370967625" expanded="true" signature="1002:1008" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetFC.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="525">
-              <caret line="235" column="12" lean-forward="true" selection-start-line="235" selection-start-column="12" selection-end-line="235" selection-end-column="113" />
-              <folding>
-                <element signature="e#0#36#0" expanded="true" />
-                <marker date="1539365372723" expanded="true" signature="3640:3645" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Layer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" selection-start-line="4" selection-end-line="4" />
-              <folding>
-                <marker date="1539965948084" expanded="true" signature="12:17" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/MatrixA.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-              <folding>
-                <marker date="1539966764163" expanded="true" signature="49:50" ph="..." />
-                <marker date="1539966764163" expanded="true" signature="145:151" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/MatrixGen.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-                <marker date="1539966757199" expanded="true" signature="100:102" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/MatrixBlocks.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-                <marker date="1539967071632" expanded="true" signature="103:104" ph="..." />
-                <marker date="1539967071632" expanded="true" signature="103:108" ph="..." />
+                <element signature="e#0#10#0" expanded="true" />
+                <marker date="1540841921629" expanded="true" signature="4709:5190" ph="..." />
+                <marker date="1540841921629" expanded="true" signature="6406:6407" ph="..." />
+                <marker date="1540841921629" expanded="true" signature="7091:7096" ph="..." />
+                <marker date="1540841921629" expanded="true" signature="18847:19158" ph="..." />
               </folding>
             </state>
           </provider>
@@ -183,6 +118,13 @@
       </list>
     </option>
   </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>print</find>
+      <find>tf_matrixes</find>
+      <find>size_list</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
@@ -196,7 +138,6 @@
         <option value="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution/__init__.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution/DifferentialEvolutianNew.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution/DifferentialEvolutionEx.py" />
-        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/DifferentialEvolution/DifferentialEvolution.py" />
         <option value="$PROJECT_DIR$/setup.py" />
         <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetPro.py" />
@@ -205,18 +146,31 @@
         <option value="$PROJECT_DIR$/physlearn/Optimizer/OptimizerAbstract.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/Optimizer.py" />
         <option value="$PROJECT_DIR$/physlearn/Util/test_functions.py" />
-        <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" />
         <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetFC.py" />
-        <option value="$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py" />
-        <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py" />
-        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py" />
-        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py" />
-        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py" />
         <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes2.py" />
         <option value="$PROJECT_DIR$/physlearn/NeuralNet/layer.py" />
-        <option value="$PROJECT_DIR$/physlearn/NeuralNet/MatrixGen.py" />
         <option value="$PROJECT_DIR$/physlearn/NeuralNet/MatrixA.py" />
         <option value="$PROJECT_DIR$/physlearn/NeuralNet/MatrixBlocks.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/MatrixGen.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetHZ.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/LayerFC.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/LayerBlocks.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/Layer.py" />
+        <option value="$PROJECT_DIR$/build/lib/physlearn/Optimizer/NelderMead/__init__.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadCtypes.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py" />
+        <option value="$PROJECT_DIR$/doc/source/conf.py" />
+        <option value="$PROJECT_DIR$/doc/conf.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/__init__.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/RandomEvolutionStrategy.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/Pauell.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQG.py" />
+        <option value="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py" />
+        <option value="$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py" />
       </list>
     </option>
   </component>
@@ -237,6 +191,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -272,13 +227,20 @@
               <item name="physlearn" type="b2602c69:ProjectViewProjectNode" />
               <item name="physlearn" type="462c0819:PsiDirectoryNode" />
               <item name="physlearn" type="462c0819:PsiDirectoryNode" />
+              <item name="Optimizer" type="462c0819:PsiDirectoryNode" />
+              <item name="NelderMead" type="462c0819:PsiDirectoryNode" />
+              <item name="bin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="physlearn" type="b2602c69:ProjectViewProjectNode" />
+              <item name="physlearn" type="462c0819:PsiDirectoryNode" />
+              <item name="physlearn" type="462c0819:PsiDirectoryNode" />
               <item name="Util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -290,6 +252,9 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/physlearn/NeuralNet/Matrixes" />
+      <recent name="$PROJECT_DIR$/physlearn/NeuralNet/Layer" />
+      <recent name="$PROJECT_DIR$/physlearn/Optimizer/NelderMead/bin" />
       <recent name="$PROJECT_DIR$/physlearn/Optimizer/DiffernetiaEvolution" />
       <recent name="$PROJECT_DIR$/physlearn/Optimizer/NelderMead" />
     </key>
@@ -345,7 +310,14 @@
       <option name="project" value="LOCAL" />
       <updated>1536703151728</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="a lot of changes">
+      <created>1539967218546</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1539967218547</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -361,7 +333,7 @@
     <frame x="0" y="-1" width="1920" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919742" visible="true" weight="0.2230523" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49919742" visible="true" weight="0.2524013" />
       <window_info id="Structure" order="1" sideWeight="0.5008026" side_tool="true" weight="0.25987193" />
       <window_info id="Favorites" order="2" sideWeight="0.5008026" side_tool="true" weight="0.25987193" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -504,59 +476,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
-          <folding>
-            <marker date="1539369541351" expanded="true" signature="13:18" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="74" column="51" selection-start-line="74" selection-start-column="51" selection-end-line="74" selection-end-column="51" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <marker date="1539888287846" expanded="true" signature="810:1274" ph="..." />
-            <marker date="1539888287846" expanded="true" signature="2747:3098" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="624">
-          <caret line="74" column="8" selection-start-line="74" selection-start-column="8" selection-end-line="84" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-            <marker date="1539886736719" expanded="true" signature="244:245" ph="..." />
-            <marker date="1539886736719" expanded="true" signature="712:713" ph="..." />
-            <marker date="1539886736719" expanded="true" signature="1193:1292" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="9" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="133" column="12" selection-start-line="133" selection-start-column="12" selection-end-line="139" selection-end-column="43" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-            <marker date="1539886752187" expanded="true" signature="2343:2421" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/OptimizeResult.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
@@ -564,106 +483,158 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/MatrixBlocks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="31" column="26" selection-start-line="31" selection-start-column="26" selection-end-line="31" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/MatrixGen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="23" lean-forward="true" selection-start-column="23" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Matrixes/MatrixA.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="21" lean-forward="true" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetHZ.py" />
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Layer/LayerFC.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetFC.py" />
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadNew.py" />
+    <entry file="file://$PROJECT_DIR$/build/lib/physlearn/Optimizer/NelderMead/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="76" selection-start-line="2" selection-start-column="76" selection-end-line="2" selection-end-column="76" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadCtypes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-957">
+          <caret line="14" column="61" lean-forward="true" selection-start-line="14" selection-start-column="61" selection-end-line="14" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Layer/LayerBlocks.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="61" selection-start-line="8" selection-start-column="61" selection-end-line="8" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Layer/Layer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="69" selection-start-line="17" selection-start-column="69" selection-end-line="17" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc/source/conf.py" />
+    <entry file="file://$PROJECT_DIR$/doc/conf.py" />
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="45" selection-start-line="1" selection-start-column="45" selection-end-line="1" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Layer/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/SubNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="29" selection-start-line="40" selection-start-column="29" selection-end-line="40" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead_ctypes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="12" column="68" selection-start-line="12" selection-start-column="68" selection-end-line="12" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/RandomEvolutionStrategy.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="24" column="24" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/physlearn/Util/test_functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="25" column="18" selection-start-line="25" selection-start-column="18" selection-end-line="25" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadAbstract.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-105">
+          <caret line="143" column="40" selection-start-line="143" selection-start-column="40" selection-end-line="143" selection-end-column="40" />
           <folding>
-            <marker date="1538592940874" expanded="true" signature="34:39" ph="..." />
-            <marker date="1538592940874" expanded="true" signature="198:329" ph="..." />
-            <marker date="1538592940874" expanded="true" signature="349:354" ph="..." />
+            <element signature="e#0#11#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/__init__.py">
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMead.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="77" selection-start-line="5" selection-start-column="77" selection-end-line="5" selection-end-column="77" />
+        <state relative-caret-position="45">
+          <caret line="3" column="37" selection-start-line="3" selection-start-column="37" selection-end-line="3" selection-end-column="37" />
           <folding>
-            <element signature="e#0#64#0" expanded="true" />
+            <marker date="1540724496695" expanded="true" signature="120:126" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadNew.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/Layer.py">
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/NelderMead/NelderMeadWQG.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        <state relative-caret-position="150">
+          <caret line="10" column="38" selection-start-line="10" selection-start-column="38" selection-end-line="10" selection-end-column="38" />
           <folding>
-            <marker date="1539965948084" expanded="true" signature="12:17" ph="..." />
+            <element signature="e#0#12#0" expanded="true" />
+            <marker date="1540809018733" expanded="true" signature="333:339" ph="..." />
+            <marker date="1540809018733" expanded="true" signature="1005:1011" ph="..." />
+            <marker date="1540809018733" expanded="true" signature="1006:1007" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetFC.py">
+    <entry file="file://$PROJECT_DIR$/physlearn/Optimizer/Pauell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="21" selection-start-line="38" selection-start-column="21" selection-end-line="38" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNetAbstract.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="235" column="12" lean-forward="true" selection-start-line="235" selection-start-column="12" selection-end-line="235" selection-end-column="113" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-            <marker date="1539365372723" expanded="true" signature="3640:3645" ph="..." />
-          </folding>
+        <state relative-caret-position="384">
+          <caret line="57" column="17" selection-start-line="57" selection-start-column="17" selection-end-line="57" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/NeuralNet.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="21" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
+        <state relative-caret-position="774">
+          <caret line="415" column="51" selection-start-line="415" selection-start-column="51" selection-end-line="415" selection-end-column="51" />
           <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <marker date="1539370967625" expanded="true" signature="130:131" ph="..." />
-            <marker date="1539370967625" expanded="true" signature="130:132" ph="..." />
-            <marker date="1539370967625" expanded="true" signature="169:178" ph="..." />
-            <marker date="1539370967625" expanded="true" signature="1002:1008" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/MatrixGen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="4" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <marker date="1539966757199" expanded="true" signature="100:102" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/MatrixA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding>
-            <marker date="1539966764163" expanded="true" signature="49:50" ph="..." />
-            <marker date="1539966764163" expanded="true" signature="145:151" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/physlearn/NeuralNet/MatrixBlocks.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="18" selection-start-line="14" selection-start-column="18" selection-end-line="14" selection-end-column="18" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <marker date="1539967071632" expanded="true" signature="103:104" ph="..." />
-            <marker date="1539967071632" expanded="true" signature="103:108" ph="..." />
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1540841921629" expanded="true" signature="4709:5190" ph="..." />
+            <marker date="1540841921629" expanded="true" signature="6406:6407" ph="..." />
+            <marker date="1540841921629" expanded="true" signature="7091:7096" ph="..." />
+            <marker date="1540841921629" expanded="true" signature="18847:19158" ph="..." />
           </folding>
         </state>
       </provider>

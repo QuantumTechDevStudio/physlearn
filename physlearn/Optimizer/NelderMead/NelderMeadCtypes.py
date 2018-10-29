@@ -9,7 +9,7 @@ from physlearn.Optimizer.NelderMead import NelderMeadAbstract
 from physlearn.Optimizer.OptimizeResult import OptimizeResult
 
 
-class NelderMeadCtypes2(NelderMeadAbstract):
+class NelderMeadCtypes(NelderMeadAbstract):
     prev_update_time = 0
 
     lib = ctypes.CDLL('/home/andrey/CLionProjects/NelderMead/library.so')
@@ -22,6 +22,10 @@ class NelderMeadCtypes2(NelderMeadAbstract):
     c_free_simplex = lib.free_simplex
 
     def __init__(self, min_element=-1, max_element=1):
+        self.dot_str = ''
+        self.amount_of_dots = 0
+        self.print_str = ''
+        self.func = None
         super().__init__(min_element, max_element)
         self.update_iter = -1
 
