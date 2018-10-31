@@ -1,0 +1,395 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>physlearn.Optimizer.NelderMead.NelderMeadAbstract &#8212; physlearn  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for physlearn.Optimizer.NelderMead.NelderMeadAbstract</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">physlearn.Optimizer</span> <span class="k">import</span> <span class="n">OptimizeResult</span>
+<span class="kn">from</span> <span class="nn">physlearn.Optimizer</span> <span class="k">import</span> <span class="n">OptimizerAbstract</span>
+
+
+<div class="viewcode-block" id="NelderMeadAbstract"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract">[docs]</a><span class="k">class</span> <span class="nc">NelderMeadAbstract</span><span class="p">(</span><span class="n">OptimizerAbstract</span><span class="p">):</span>
+    <span class="c1"># Переменные, в которых хранятся точки симплеска и значения функции в них</span>
+    <span class="n">x_points</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">y_points</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Минимальный и максимальный элементы при случайной генерации точек симплкса</span>
+    <span class="n">min_element</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">max_element</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="c1"># Размерность оптимизируемой функции</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Параметры алгоритма</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="c1"># Оптимизируемая функция</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Ряд переменных, необходимых для работы алгоритма</span>
+    <span class="n">h_index</span><span class="p">,</span> <span class="n">g_index</span><span class="p">,</span> <span class="n">l_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">x_center</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">x_reflected</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># Переменные необходимые для работы прогресс бара</span>
+    <span class="n">dot_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">print_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">speed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">percent_done</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">update_pb_iter</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">amount_of_dots</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">current_best_point</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">0.5</span>
+    <span class="n">search_depth</span> <span class="o">=</span> <span class="mi">100</span>
+
+    <span class="n">break_point</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_element</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_element</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">min_element</span><span class="p">,</span> <span class="n">max_element</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_types</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variance_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+<div class="viewcode-block" id="NelderMeadAbstract.parse_params"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.parse_params">[docs]</a>    <span class="k">def</span> <span class="nf">parse_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params_dict</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">params_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">params_dict</span><span class="p">[</span><span class="s1">&#39;alpha&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">params_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;beta&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">params_dict</span><span class="p">[</span><span class="s1">&#39;beta&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">params_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">params_dict</span><span class="p">[</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">params_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;epsilon&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">params_dict</span><span class="p">[</span><span class="s1">&#39;epsilon&#39;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">params_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;search_depth&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">search_depth</span> <span class="o">=</span> <span class="n">params_dict</span><span class="p">[</span><span class="s1">&#39;search_depth&#39;</span><span class="p">]</span></div>
+
+    <span class="c1"># Установка параметров алгоритма</span>
+<div class="viewcode-block" id="NelderMeadAbstract.set_params"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.set_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.set_epsilon_and_sd"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.set_epsilon_and_sd">[docs]</a>    <span class="k">def</span> <span class="nf">set_epsilon_and_sd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">search_depth</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">=</span> <span class="n">epsilon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">search_depth</span> <span class="o">=</span> <span class="n">search_depth</span></div>
+
+    <span class="c1"># Метод, который вычисляет значение функции от параметров params</span>
+<div class="viewcode-block" id="NelderMeadAbstract.calc_func"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calc_func">[docs]</a>    <span class="k">def</span> <span class="nf">calc_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.optimize"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">end_cond</span><span class="p">,</span> <span class="n">min_cost</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">):</span>
+        <span class="c1"># func - оптимизируемая функция, должна принимать numpy.array соотвесвтующей размерности в качесвте параметра</span>
+        <span class="c1"># dim - размерность функции</span>
+        <span class="c1"># end_method - условие останова</span>
+        <span class="c1"># &#39;variance&#39; - дисперсия набора значений функции симплкса должна быть меньше end_cond</span>
+        <span class="c1"># &#39;max_iter&#39; - остановка при достижении end_cond итераций</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_points</span><span class="p">()</span>  <span class="c1"># Создаем точки</span>
+        <span class="c1"># Вычисляем значение функции в точках</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_func</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">method_types</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># В данном списке сохраняются типы работы алгоритма</span>
+
+        <span class="c1"># Переменные, в которых сохраняется результат</span>
+        <span class="n">reason_of_break</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># Причина выхода</span>
+        <span class="n">amount_of_iterations</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Количество выполненных итераций</span>
+        <span class="n">exit_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">100</span>  <span class="c1"># Код выхода</span>
+        <span class="n">is_converged</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Сошелся алгоритм или нет</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Список, содержащий значения лучшей функции на каждой итерации</span>
+
+        <span class="c1"># Строка с точками для прогресс бара</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dot_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">exit_point</span> <span class="o">=</span> <span class="n">end_cond</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>  <span class="c1"># Время начала работы</span>
+        <span class="n">prev_update_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">end_cond</span><span class="p">):</span>
+            <span class="n">cur_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">cur_time</span> <span class="o">-</span> <span class="n">prev_update_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">cur_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="n">delta</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">percent_done</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">end_cond</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_progress_bar</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">prev_update_time</span> <span class="o">=</span> <span class="n">cur_time</span>
+
+            <span class="n">method_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variance_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">method_type</span><span class="p">)</span>
+            <span class="n">cur_cost</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_cost</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">cur_cost</span> <span class="o">&lt;</span> <span class="n">min_cost</span><span class="p">:</span>
+                <span class="n">reason_of_break</span> <span class="o">=</span> <span class="s1">&#39;Minimum cost reached&#39;</span>
+                <span class="n">exit_code</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="n">amount_of_iterations</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">is_converged</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">method_types</span><span class="p">[</span><span class="n">method_type</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">last_method_types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span><span class="p">[</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">search_depth</span><span class="p">:]</span>
+            <span class="n">bad_variant_percent</span> <span class="o">=</span> <span class="n">last_method_types</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_depth</span>
+            <span class="k">if</span> <span class="n">bad_variant_percent</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span><span class="p">:</span>
+                <span class="n">reason_of_break</span> <span class="o">=</span> <span class="s1">&#39;Local minimum reached&#39;</span>
+                <span class="n">exit_code</span> <span class="o">=</span> <span class="mi">1</span>
+                <span class="n">amount_of_iterations</span> <span class="o">=</span> <span class="n">i</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">is_converged</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;find minimum&#39;</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">break_point</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">exit_point</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3000</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">break_point</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="n">exit_point</span><span class="p">)</span>
+                <span class="n">is_converged</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="c1"># break</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="p">(</span><span class="n">end_cond</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">reason_of_break</span> <span class="o">=</span> <span class="s1">&#39;Maximum iterations reached&#39;</span>
+                <span class="n">exit_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">amount_of_iterations</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="n">is_converged</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="n">exit_point</span><span class="p">:</span>
+                <span class="n">reason_of_break</span> <span class="o">=</span> <span class="s1">&#39;Maximum iterations reached&#39;</span>
+                <span class="n">exit_code</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="n">amount_of_iterations</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="n">is_converged</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">break</span>
+
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">total_time</span> <span class="o">=</span> <span class="n">end_time</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_time</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">percent_done</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">amount_of_iterations</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="n">end_cond</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_progress_bar</span><span class="p">(</span><span class="n">amount_of_iterations</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">l_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_points</span><span class="p">()</span>  <span class="c1"># Определяем точку с нименьшим значением функции</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">OptimizeResult</span><span class="p">(</span><span class="n">is_converged</span><span class="p">,</span> <span class="n">amount_of_iterations</span><span class="p">,</span> <span class="n">total_time</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span><span class="p">,</span> <span class="n">exit_code</span><span class="p">,</span>
+                                <span class="n">reason_of_break</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="n">l_index</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.update_progress_bar"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.update_progress_bar">[docs]</a>    <span class="k">def</span> <span class="nf">update_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+        <span class="n">eraser</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">print_str</span><span class="p">))</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">eraser</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">amount_of_dots</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dot_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">amount_of_dots</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dot_str</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amount_of_dots</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">speed_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">print_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dot_str</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; (&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">percent_done</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;%) &#39;</span> <span class="o">+</span> <span class="n">speed_str</span> <span class="o">+</span> <span class="s1">&#39; it\s&#39;</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\r</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">print_str</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.iteration"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.iteration">[docs]</a>    <span class="k">def</span> <span class="nf">iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g_index</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">l_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_points</span><span class="p">()</span>  <span class="c1"># Находим точки h, g и l</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_best_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l_index</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_center</span><span class="p">()</span>  <span class="c1"># Вычисляем центр масс</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_reflected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_reflected_point</span><span class="p">()</span>  <span class="c1"># Вычисляем отраженную</span>
+        <span class="c1"># точку</span>
+        <span class="n">y_reflected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_reflected</span><span class="p">)</span>
+        <span class="c1"># Далее мы делаем ряд действий, в зависимости от соотношения между значениями функции в найденных точках</span>
+        <span class="c1"># Объяснять подробно нет смысла, так что смотри просто &quot;Метод Нелдера - Мида&quot; в вики</span>
+        <span class="k">if</span> <span class="n">y_reflected</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l_index</span><span class="p">]:</span>
+            <span class="n">method_type</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x_stretch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_stretched_point</span><span class="p">()</span>
+            <span class="n">y_stretch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_func</span><span class="p">(</span><span class="n">x_stretch</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">y_stretch</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l_index</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_stretch</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_stretch</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_reflected</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_reflected</span>
+
+        <span class="k">elif</span> <span class="n">y_reflected</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">g_index</span><span class="p">]:</span>
+            <span class="n">method_type</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_reflected</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_reflected</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">y_reflected</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_reflected</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_reflected</span>
+
+            <span class="n">x_compress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_compressed_point</span><span class="p">()</span>
+            <span class="n">y_compress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc_func</span><span class="p">(</span><span class="n">x_compress</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">y_compress</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]:</span>
+                <span class="n">method_type</span> <span class="o">=</span> <span class="mi">2</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_compress</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_compress</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">method_type</span> <span class="o">=</span> <span class="mi">3</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">compress_simplex</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">y_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">calc_func</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">method_type</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.create_points"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.create_points">[docs]</a>    <span class="k">def</span> <span class="nf">create_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># Создаем массив точек размера dim + 1 (так требуется по методу)</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_element</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_element</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">points</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.find_points"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.find_points">[docs]</a>    <span class="k">def</span> <span class="nf">find_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># В данном методе мы находим три точки: h - точка с наибользим значением оптимизируемой функции,</span>
+        <span class="c1"># g - следующая за точкой с наибольишм значение, l - с наименьшим значением.</span>
+        <span class="c1"># Далее мы задаем начальные парамтры...</span>
+        <span class="n">h_point</span> <span class="o">=</span> <span class="o">-</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+        <span class="n">g_point</span> <span class="o">=</span> <span class="o">-</span><span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+        <span class="n">l_point</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxsize</span>
+        <span class="n">h_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">g_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">l_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># ...и проводим стандарнтый поиск.</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_points</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">&gt;</span> <span class="n">h_point</span><span class="p">:</span>
+                <span class="n">g_point</span> <span class="o">=</span> <span class="n">h_point</span>
+                <span class="n">h_point</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="n">g_index</span> <span class="o">=</span> <span class="n">h_index</span>
+                <span class="n">h_index</span> <span class="o">=</span> <span class="n">index</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">item</span> <span class="o">&gt;</span> <span class="n">g_point</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">item</span> <span class="o">!=</span> <span class="n">h_point</span><span class="p">):</span>
+                <span class="n">g_point</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="n">g_index</span> <span class="o">=</span> <span class="n">index</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">&lt;</span> <span class="n">l_point</span><span class="p">:</span>
+                <span class="n">l_point</span> <span class="o">=</span> <span class="n">item</span>
+                <span class="n">l_index</span> <span class="o">=</span> <span class="n">index</span>
+
+        <span class="k">return</span> <span class="n">h_index</span><span class="p">,</span> <span class="n">g_index</span><span class="p">,</span> <span class="n">l_index</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.calculate_center"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_center">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_center</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Вычисляем &quot;центр масс&quot; всех точек, за исключением h</span>
+        <span class="n">sum_data</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">:</span>
+                <span class="n">sum_data</span> <span class="o">+=</span> <span class="n">item</span>
+
+        <span class="k">return</span> <span class="n">sum_data</span> <span class="o">/</span> <span class="n">n</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.calculate_reflected_point"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_reflected_point">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_reflected_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># В данной функции выполняется отражение точки h относительно центра масс</span>
+        <span class="n">x_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span>
+        <span class="n">x_reflected</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">x_h</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x_reflected</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.calculate_stretched_point"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_stretched_point">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_stretched_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># В данной функции выполняется растяжение в направлении, соединяющим h, center и reflected</span>
+        <span class="n">x_stretch</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_reflected</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x_stretch</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.calculate_compressed_point"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_compressed_point">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_compressed_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">x_h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">h_index</span><span class="p">]</span>
+        <span class="c1"># В данной функции выполняется сжатие к center</span>
+        <span class="n">x_compress</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beta</span> <span class="o">*</span> <span class="n">x_h</span><span class="p">)</span> <span class="o">+</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_center</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x_compress</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.compress_simplex"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.compress_simplex">[docs]</a>    <span class="k">def</span> <span class="nf">compress_simplex</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># В данной функции происходит схатие всего симплекса к l</span>
+        <span class="n">x_l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">l_index</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">x_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_points</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">x_i</span> <span class="o">+</span> <span class="n">x_l</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.return_method_types"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.return_method_types">[docs]</a>    <span class="k">def</span> <span class="nf">return_method_types</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_types</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.return_types_list"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.return_types_list">[docs]</a>    <span class="k">def</span> <span class="nf">return_types_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">types_list</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.average"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.average">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">average</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="c1"># Вычисление среднего значения</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NelderMeadAbstract.variance"><a class="viewcode-back" href="../../../../physlearn.Optimizer.NelderMead.html#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.variance">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">variance</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="c1"># Вычисление дисперсии</span>
+        <span class="n">mean_data</span> <span class="o">=</span> <span class="n">NelderMeadAbstract</span><span class="o">.</span><span class="n">average</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">sum_var</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">sum_var</span> <span class="o">+=</span> <span class="p">(</span><span class="n">item</span> <span class="o">-</span> <span class="n">mean_data</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">sum_var</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

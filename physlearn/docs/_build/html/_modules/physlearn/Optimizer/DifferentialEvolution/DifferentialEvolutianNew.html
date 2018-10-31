@@ -1,0 +1,232 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew &#8212; physlearn  documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutionAbstract</span> <span class="k">import</span> <span class="n">DifferentialEvolutionAbstract</span>
+
+
+<div class="viewcode-block" id="DifferentialEvolutionNew"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew">[docs]</a><span class="k">class</span> <span class="nc">DifferentialEvolutionNew</span><span class="p">(</span><span class="n">DifferentialEvolutionAbstract</span><span class="p">):</span>
+    <span class="n">alpha</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">prev_state</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">update_func</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">update_iter</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">cur_params</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">prev_params</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># prev_func = None</span>
+    <span class="n">grid_changed</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="c1"># filter_alpha = None</span>
+    <span class="n">cost_params</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.sigmoid"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.sigmoid">[docs]</a>    <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">*</span> <span class="n">z</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.update"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># print(&#39;ok&#39;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grid_changed</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cur_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_func</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_population</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_individuals</span><span class="p">)</span>
+        <span class="n">cur_func</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">)</span>
+        <span class="n">prev_func</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_individuals</span><span class="p">):</span>
+            <span class="n">cur_func</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur_params</span><span class="p">)</span>
+            <span class="n">prev_func</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span><span class="p">)</span>
+
+        <span class="n">filter_alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">((</span><span class="n">prev_func</span> <span class="o">-</span> <span class="n">cur_func</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_population</span> <span class="o">=</span> <span class="n">filter_alpha</span> <span class="o">*</span> <span class="n">prev_func</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">filter_alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">cur_func</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.set_alpha"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.set_alpha">[docs]</a>    <span class="k">def</span> <span class="nf">set_alpha</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">q</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.set_cost_params"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.set_cost_params">[docs]</a>    <span class="k">def</span> <span class="nf">set_cost_params</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost_params</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_params</span> <span class="o">=</span> <span class="n">cost_params</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.iteration"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.iteration">[docs]</a>    <span class="k">def</span> <span class="nf">iteration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Создаем необходимые матрицы, перемешиванием матрицы популяции</span>
+        <span class="n">partners_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+        <span class="n">a_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+        <span class="n">b_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+        <span class="c1"># Мутировавший партнер вычисляется по соотвествующей формуле</span>
+        <span class="n">mutation_matrix</span> <span class="o">=</span> <span class="n">partners_matrix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">*</span> <span class="p">(</span><span class="n">a_matrix</span> <span class="o">-</span> <span class="n">b_matrix</span><span class="p">)</span>
+        <span class="c1"># Далее мы создаем &quot;маску&quot;. Если на месте с инедксами i, j  в маске стоит единица, то соотвествующий</span>
+        <span class="c1"># элемент потомка</span>
+        <span class="c1"># берется из мутировавшего партнера. Если 0 - то из исходного.</span>
+        <span class="c1"># Для начала создаем случайную матрицу, заполненную числами от 0 до 1 с равномерным распределением</span>
+        <span class="n">random_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="c1"># Затем сравниваем эту матрицу с нужной вероятноостью выпадения единицы. После сравнения у нас получится матрица</span>
+        <span class="c1"># каждый элемент которой есть булевская переменная, причем значения True будут в ней находится с вероятностью p,</span>
+        <span class="c1"># а False - 1-p. Затем, после домножения на 1 True превратится в единиуц, а False в ноль.</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">random_matrix</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span>
+        <span class="c1"># Затем мы получаем матрицу потомков</span>
+        <span class="n">child_matrix</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">*</span> <span class="n">mutation_matrix</span> <span class="o">-</span> <span class="p">(</span><span class="n">mask</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span>
+        <span class="c1"># Вычисляем значения оптимизируемой функции на потомках</span>
+        <span class="c1"># child_funcs = numpy.array(list(map(self.func, child_matrix)))</span>
+        <span class="n">cur_child_func</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_func</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_individuals</span><span class="p">):</span>
+            <span class="n">cur_child_func</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">child_matrix</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cur_params</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_changed</span><span class="p">:</span>
+            <span class="n">prev_child_func</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_func</span><span class="p">)</span>
+            <span class="n">filter_alpha</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_func</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_individuals</span><span class="p">):</span>
+                <span class="n">prev_child_func</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">child_matrix</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_params</span><span class="p">)</span>
+                <span class="n">filter_alpha</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">((</span><span class="n">prev_child_func</span> <span class="o">-</span> <span class="n">cur_child_func</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child_func</span> <span class="o">=</span> <span class="n">filter_alpha</span> <span class="o">*</span> <span class="n">prev_child_func</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">filter_alpha</span><span class="p">)</span> <span class="o">*</span> <span class="n">cur_child_func</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grid_changed</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">child_func</span> <span class="o">=</span> <span class="n">cur_child_func</span>
+
+        <span class="c1"># Аналогично, получаем маску для выбора лучшей особей</span>
+        <span class="n">func_mask</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">child_func</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1</span>
+        <span class="n">reshaped_func_mask</span> <span class="o">=</span> <span class="n">func_mask</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">func_mask</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># Получаем новую популяцию</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="n">reshaped_func_mask</span> <span class="o">*</span> <span class="n">child_matrix</span> <span class="o">-</span> <span class="p">(</span><span class="n">reshaped_func_mask</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span>
+        <span class="c1"># delta = new_de_population - self.population</span>
+        <span class="c1"># И новый список значений функции особей</span>
+        <span class="c1"># self.func_population = func_mask * self.child_funcs - (func_mask - 1) * self.func_population</span>
+        <span class="c1"># self.population = self.alpha * self.prev_state + (1 - self.alpha) * new_de_population</span>
+
+        <span class="c1"># for index in range(self.amount_of_individuals):</span>
+        <span class="c1">#    self.func_population[index] = self.func(self.population[index], self.cur_params)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_population</span> <span class="o">=</span> <span class="n">func_mask</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">child_func</span> <span class="o">-</span> <span class="p">(</span><span class="n">func_mask</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">func_population</span></div>
+
+        <span class="c1"># self.prev_state = delta</span>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.set_update_func"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.set_update_func">[docs]</a>    <span class="k">def</span> <span class="nf">set_update_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">update_func</span><span class="p">,</span> <span class="n">update_iter</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_func</span> <span class="o">=</span> <span class="n">update_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_iter</span> <span class="o">=</span> <span class="n">update_iter</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.optimize"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">end_cond</span><span class="p">,</span> <span class="n">debug_pop_print</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># func - оптимизиуемая функция, должна принмать в качетсве параметра массив numpy.array размерности dim</span>
+        <span class="c1"># dim - размерность</span>
+        <span class="c1"># amount_of_individuals - количество особей</span>
+        <span class="c1"># f - сила мутации</span>
+        <span class="c1"># p - вероятность того, что в потомке элемент будет взят из второго партнера</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="n">dim</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">population</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_population</span><span class="p">()</span>  <span class="c1"># Создаем популяцию</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Каждый массив: numpy.array([1, 2, ..., amount_of_individuals])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func_population</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_individuals</span><span class="p">)</span>
+        <span class="c1"># self.prev_func = numpy.zeros(self.amount_of_individuals)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prev_state</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cur_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_func</span><span class="p">()</span>
+        <span class="c1"># for index in range(self.amount_of_individuals):</span>
+        <span class="c1">#     self.func_population[index] = self.func(self.population[index])</span>
+        <span class="c1"># self.func_population = numpy.array(list(map(lambda item: func(item), self.population)))  # Вычисляем для</span>
+        <span class="c1"># каждой особи в популяции значении функции</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">child_func</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_method</span> <span class="o">==</span> <span class="s1">&#39;max_iter&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">debug_pop_print</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">end_cond</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_iter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span><span class="p">()</span>
+                    <span class="c1"># self.cost_list.append(numpy.min(self.func_population))</span>
+                    <span class="n">_</span><span class="p">,</span> <span class="n">min_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_best_individual</span><span class="p">()</span>
+                    <span class="c1"># self.cost_list.append(min_func)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">end_cond</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">debug_pop_print</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-------------------------------&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_iter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">iteration</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">choose_best_individual</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.choose_best_individual"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.choose_best_individual">[docs]</a>    <span class="k">def</span> <span class="nf">choose_best_individual</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Данная функция находит лучшую особь в популяции</span>
+        <span class="n">cost_funcs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">func_population</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_individuals</span><span class="p">):</span>
+            <span class="n">cost_funcs</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_params</span><span class="p">)</span>
+        <span class="n">func_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cost_funcs</span><span class="p">)</span>
+        <span class="n">min_func</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">func_list</span><span class="p">)</span>
+        <span class="n">best_index</span> <span class="o">=</span> <span class="n">func_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">min_func</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">population</span><span class="p">[</span><span class="n">best_index</span><span class="p">],</span> <span class="n">min_func</span></div>
+
+<div class="viewcode-block" id="DifferentialEvolutionNew.return_cost_list"><a class="viewcode-back" href="../../../../physlearn.Optimizer.DifferentialEvolution.html#physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew.DifferentialEvolutionNew.return_cost_list">[docs]</a>    <span class="k">def</span> <span class="nf">return_cost_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_list</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

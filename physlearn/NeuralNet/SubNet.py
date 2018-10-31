@@ -28,11 +28,14 @@ class SubNet:
             sizes_list.append(weight)
         return sizes_list
 
+    def return_layer_matrix_size(self, layer_index):
+        return self.design[layer_index + 1], self.design[layer_index]
+
     def return_amount_of_layers(self):
         return self.amount_of_layers
 
-    def return_amount_of_neurons(self, layer):
-        return self.design[layer]
+    def return_amount_of_neurons(self, layer_index):
+        return self.design[layer_index]
 
     def return_output_set(self):
         return self.output_set

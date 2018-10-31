@@ -71,9 +71,11 @@ class NeuralNet:
 
         self.design = []  # Каждый элемент этого списка хранит в себе либо описание отдельного слоя
         # (количество нейронов, функция активации), либо подсети
+        self.amount_of_neurons_in_layer = []
+        self.activation_funcs = []
         self.design_len = 0  # Длина self.design
         self.tf_layers = []  # Графы вычислений для каждого слоя
-        self.unroll_breaks = [(0, 0)]  # Границы каждого слоя в развернутом векторе
+        self.unroll_breaks = [0]  # Границы каждого слоя в развернутом векторе
         self.layers = []  # Здесь хранятся слои, как объекты типа Layer
 
         self.placeholders_dict = {}  # Словарь вида (tf.placeholder: numpy.array). Отвечает за матрицы весов.
@@ -222,17 +224,33 @@ class NeuralNet:
         self.x = tf.placeholder(tf.double)  # Создание placeholder для входных данных...
         self.y = tf.placeholder(tf.double)  # ...и обучающих выходов
 
+        for index, layer in enumerate(self.design):
+            if layer[-1] == 0:
+                self.amount_of_neurons_in_layer.append(layer[0])
+                self.activation_funcs.append(layer[1])
+
+            else:
+                self.activation_funcs.extend(layer[1])
+                sub_nets = layer[0]
+                amount_of_layers = sub_nets[0].return_amount_of_layers()
+                for i in range(amount_of_layers):
+                    amount_of_neurons = 0
+                    for sub_net in sub_nets:
+                        amount_of_neurons += sub_net.return_amount_of_neurons(i)
+                    self.amount_of_neurons_in_layer.append(amount_of_neurons)
+
         self._create_layers()
         self.init = tf.global_variables_initializer()  # Инициализатор переменных
         self.sess.run(self.init)  # Инициализация переменных
         for index, layer in enumerate(self.layers):
             if index == 0:
-                current_layer = layer.activation_func(layer.weight_matrix * self.x + layer.bias_vector)
+                current_layer = layer.activation_func(layer * self.x)
             else:
                 prev_layer = self.tf_layers[index - 1]
-                current_layer = layer.activation_func(layer.weight_matrix * prev_layer + layer.bias_vector)
+                current_layer = layer.activation_func(layer * prev_layer)
             self.tf_layers.append(current_layer)
         self.output = self.tf_layers[-1]  # Выход нейронной сети - это последний слой => послдений элемент tf_layers
+        self.dim = self.unroll_breaks[-1]
 
     def _create_layers(self):
         self.design_len = len(self.design)
@@ -240,71 +258,37 @@ class NeuralNet:
             if layer[-1] == 0:
                 self._add_fc_layer(index)
             else:
-                self._add_sub_nets_layers(index, layer)
+                self._add_sub_nets_layers(index)
 
-    def _add_sub_nets_layers(self, index, layer):
-        sub_sizes = []
-        sub_nets = layer[0]
-        for sub_net in sub_nets:
-            sub_sizes.append(sub_net.return_sizes())
-        weight_sizes = []
-        activation_funcs = []
-        amount_of_layers = sub_nets[0].amount_of_layers
+    def _add_sub_nets_layers(self, index):
+        sub_nets = self.design[index][0]
+        activation_funcs = self.design[index][1]
+        amount_of_layers = sub_nets[0].return_amount_of_layers()
         for i in range(amount_of_layers - 1):
-            cur_layer = []
-            activation_funcs.append(layer[1][i + 1])
-            for sub_net_sizes in sub_sizes:
-                cur_layer.append(sub_net_sizes[i])
-            weight_sizes.append(cur_layer)
-        for i, sub_layer in enumerate(weight_sizes):
-            weight_dim = sum(list(map(lambda shape: shape[0] * shape[1], sub_layer)))
-            bias_dim = sum(list(map(lambda shape: shape[0], sub_layer)))
-            self.dim += weight_dim + bias_dim
-            weight_breaker = self.unroll_breaks[-1][1] + weight_dim
-            bias_breaker = weight_breaker + bias_dim
-            self.unroll_breaks.append((weight_breaker, bias_breaker))
-            cur_layer = LayerBlocks(sub_layer, activation_funcs[i])
+            cur_layer_size = []
+            for sub_net in sub_nets:
+                cur_layer_size.append(sub_net.return_layer_matrix_size(i))
+            cur_layer = LayerBlocks(cur_layer_size, activation_funcs[i + 1])
+            breaker = self.unroll_breaks[-1] + cur_layer.return_layer_dim()
+            self.unroll_breaks.append(breaker)
             self.layers.append(cur_layer)
         if index != self.design_len - 1:
-            current_layer_units = 0
-            sub_nets = self.design[index]
-            for sub_net in sub_nets:
-                current_layer_units += sub_net.design[-1]
-            next_layer_units = self.design[index + 1][0]
-            size = current_layer_units * next_layer_units  # Количество элементов матрицы
-            self.dim += size + next_layer_units
-            weight_breaker = size + self.unroll_breaks[-1][1]  # Индекс конца матрицы весов
-            # в unroll векторе - ее размер, плюс сдвиг, связанный с предыдущими матрицами
-            bias_breaker = weight_breaker + next_layer_units  # Аналогично
-            self.unroll_breaks.append((weight_breaker, bias_breaker))
-            if self.design[index + 1][-1] == 0:
-                activation_func = self.design[index + 1][1]
-            else:
-                activation_func = self.design[index + 1][0][0].design[0][1]
+            current_layer_units = sub_nets[-1].return_amount_of_neurons(-1)
+            next_layer_units = self.amount_of_neurons_in_layer[index + 1]
+            activation_func = self.activation_funcs[index + 1]
             cur_layer = LayerFC((next_layer_units, current_layer_units), activation_func)
+            breaker = self.unroll_breaks[-1] + cur_layer.return_layer_dim()
+            self.unroll_breaks.append(breaker)
             self.layers.append(cur_layer)
 
     def _add_fc_layer(self, index):
         if index != self.design_len - 1:
-            current_layer_units = self.design[index][0]
-            if self.design[index + 1][-1] == 0:
-                next_layer_units = self.design[index + 1][0]
-            else:
-                sub_nets = self.design[index + 1][0]
-                next_layer_units = 0
-                for sub_net in sub_nets:
-                    next_layer_units += sub_net.design[0]
-            size = current_layer_units * next_layer_units  # Количество элементов матрицы
-            self.dim += size + next_layer_units
-            weight_breaker = size + self.unroll_breaks[-1][1]  # Индекс конца матрицы весов
-            # в unroll векторе - ее размер, плюс сдвиг, связанный с предыдущими матрицами
-            bias_breaker = weight_breaker + next_layer_units  # Аналогично
-            self.unroll_breaks.append((weight_breaker, bias_breaker))
-            if self.design[index + 1][-1] == 0:
-                activation_func = self.design[index + 1][1]
-            else:
-                activation_func = self.design[index + 1][1][0]
+            current_layer_units = self.amount_of_neurons_in_layer[index]
+            next_layer_units = self.amount_of_neurons_in_layer[index + 1]
+            activation_func = self.activation_funcs[index + 1]
             cur_layer = LayerFC((next_layer_units, current_layer_units), activation_func)
+            breaker = self.unroll_breaks[-1] + cur_layer.return_layer_dim()
+            self.unroll_breaks.append(breaker)
             self.layers.append(cur_layer)
 
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -367,17 +351,19 @@ class NeuralNet:
 
         :param unroll_vector: numpy.array with dimension = net.dim
         """
+        if not self.if_compile:
+            sys.stderr.write('Compile model before roll matrixes')
+            return None
+        if len(unroll_vector) != self.dim:
+            sys.stderr.write('Error in dimension of unroll vector')
         assign_list = []
         for index, layer in enumerate(self.layers):
-            left_weight_break = self.unroll_breaks[index][1]  # Левая граница матрицы весов = правая гранница
+            left_layer_break = self.unroll_breaks[index]  # Левая граница матрицы весов = правая гранница
             # вектора сдвига предыдущего слоя
-            right_weight_break = self.unroll_breaks[index + 1][0]  # Правая граница матрицы весов =
+            right_layer_break = self.unroll_breaks[index + 1]  # Правая граница матрицы весов =
             # = левая граница вектора сдвига
-            right_bias_break = self.unroll_breaks[index + 1][1]  # Правая граница вектора сдвига
-            # Далее мы выделяем нужный нам фрагмент из развернутого вектра, и делаем его нужным размером
-            weight_unroll_vector = unroll_vector[left_weight_break:right_weight_break]
-            bias_unroll_vector = unroll_vector[right_weight_break:right_bias_break]
-            assign_list.extend(layer.roll_matrix(weight_unroll_vector, bias_unroll_vector))
+            layer_unroll_vector = unroll_vector[left_layer_break:right_layer_break]
+            assign_list.extend(layer.roll_matrix(layer_unroll_vector))
         self._assign_matrixes(assign_list)
 
     def set_random_matrixes(self):

@@ -1,5 +1,6 @@
 import ctypes
 import sys
+import os
 import time
 import math
 
@@ -12,7 +13,11 @@ from physlearn.Optimizer.OptimizeResult import OptimizeResult
 class NelderMeadCtypes(NelderMeadAbstract):
     prev_update_time = 0
 
-    lib = ctypes.CDLL('/home/andrey/CLionProjects/NelderMead/library.so')
+    module = str(sys.modules['physlearn.Optimizer.NelderMead'])
+    split_path = module.split('\'')
+    dir_path = os.path.split(split_path[3])
+
+    lib = ctypes.CDLL(dir_path[0] + '/bin/neldermead.so')
 
     c_set_simplex = lib.set_simplex
     c_set_params = lib.set_params
