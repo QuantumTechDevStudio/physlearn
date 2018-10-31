@@ -351,6 +351,7 @@ class NeuralNet:
 
         :param unroll_vector: numpy.array with dimension = net.dim
         """
+
         if not self.if_compile:
             sys.stderr.write('Compile model before roll matrixes')
             return None

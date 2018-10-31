@@ -113,7 +113,7 @@ class NelderMeadAbstract(OptimizerAbstract):
 
         exit_point = end_cond
         self.start_time = time.time()  # Время начала работы
-        prev_update_time = 0
+        prev_update_time = time.time()
         self.print_str = ''
         for i in range(end_cond):
             cur_time = time.time()

@@ -4,9 +4,11 @@ from physlearn.NeuralNet.Matrixes.MatrixA import MatrixA
 
 
 class MatrixBlocks(MatrixA):
-    break_points = [0]
 
     def __init__(self, matrix, shape):
+        self.break_points = [0]
+        self.matrix = None
+        self.shape = None
         prev_break_point = 0
         for cur_shape in shape:
             cur_break_point = prev_break_point + (cur_shape[0] * cur_shape[1])

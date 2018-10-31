@@ -1,6 +1,4 @@
 class MatrixA:
-    matrix = None
-    shape = None
 
     def __init__(self, matrix, shape):
         self.matrix = matrix
