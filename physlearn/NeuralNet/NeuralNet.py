@@ -254,11 +254,15 @@ class NeuralNet:
 
     def _create_layers(self):
         self.design_len = len(self.design)
-        for index, layer in enumerate(self.design):
+        index = 0
+        while index < len(self.design):
+            layer = self.design[index]
             if layer[-1] == 0:
                 self._add_fc_layer(index)
+                index += 1
             else:
-                self._add_sub_nets_layers(index)
+                amount_of_layers = self._add_sub_nets_layers(index)
+                index += amount_of_layers
 
     def _add_sub_nets_layers(self, index):
         sub_nets = self.design[index][0]
@@ -280,6 +284,7 @@ class NeuralNet:
             breaker = self.unroll_breaks[-1] + cur_layer.return_layer_dim()
             self.unroll_breaks.append(breaker)
             self.layers.append(cur_layer)
+        return amount_of_layers
 
     def _add_fc_layer(self, index):
         if index != self.design_len - 1:

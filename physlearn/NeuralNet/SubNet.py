@@ -1,12 +1,13 @@
 class SubNet:
-    design = []
-    input_layer = ()
-    output_layer = ()
-    amount_of_outputs = None
-    output_activation_func = None
-    input_set = False
-    output_set = False
-    amount_of_layers = 0
+    def __init__(self):
+        self.design = []
+        self.input_layer = ()
+        self.output_layer = ()
+        self.amount_of_layers = None
+        self.output_activation_func = None
+        self.input_set = False
+        self.output_set = False
+        self.amount_of_layers = 0
 
     def add(self, amount_of_units):
         current_layer = amount_of_units
