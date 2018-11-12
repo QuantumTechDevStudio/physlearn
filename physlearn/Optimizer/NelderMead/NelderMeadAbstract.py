@@ -3,9 +3,10 @@ import sys
 import time
 
 import numpy
+from tqdm import tqdm
 
 from physlearn.Optimizer import OptimizeResult
-from physlearn.Optimizer import OptimizerAbstract
+from physlearn.Optimizer.OptimizerAbstract import OptimizerAbstract
 
 
 class NelderMeadAbstract(OptimizerAbstract):
@@ -36,15 +37,45 @@ class NelderMeadAbstract(OptimizerAbstract):
     update_pb_iter = 1000
     amount_of_dots = 0
     current_best_point = None
-    progress_bar = True
+    progress_bar = 'self'
+    show_progress_bar = True
 
     epsilon = 0.5
     search_depth = 100
 
     break_point = -1
 
-    def __init__(self, min_element=-1, max_element=1, progress_bar=True):
+    def __init__(self, min_element=-1, max_element=1, progress_bar='self'):
         super().__init__(min_element, max_element)
+        # Переменные, в которых хранятся точки симплеска и значения функции в них
+        self.x_points = None
+        self.y_points = None
+        # Размерность оптимизируемой функции
+        self.dim = None
+        # Параметры алгоритма
+        self.alpha = 1
+        self.beta = 0.5
+        self.gamma = 2
+        # Оптимизируемая функция
+        self.func = None
+        # Ряд переменных, необходимых для работы алгоритма
+        self.h_index, self.g_index, self.l_index = None, None, None
+        self.x_center = None
+        self.x_reflected = None
+        # Переменные необходимые для работы прогресс бара
+        self.dot_str = ''
+        self.print_str = ''
+        self.start_time = 0
+        self.speed = 0
+        self.percent_done = 0
+        self.update_pb_iter = 1000
+        self.amount_of_dots = 0
+        self.current_best_point = None
+
+        self.epsilon = 0.5
+        self.search_depth = 100
+
+        self.break_point = -1
         self.alpha = 1
         self.beta = 0.5
         self.gamma = 2
@@ -81,8 +112,19 @@ class NelderMeadAbstract(OptimizerAbstract):
         self.search_depth = search_depth
 
     # Метод, который вычисляет значение функции от параметров params
-    def calc_func(self, params):
+    def func(self, params):
         return []
+
+    def type_of_progress_bar(self, params):
+        if self.progress_bar == 'self':
+            self.show_progress_bar = True
+            return params
+        elif self.progress_bar == 'tqdm':
+            self.show_progress_bar = False
+            return tqdm(params)
+        else:
+            self.show_progress_bar = False
+            return params
 
     def optimize(self, func, dim, end_cond, min_cost=1e-5):
         # func - оптимизируемая функция, должна принимать numpy.array соотвесвтующей размерности в качесвте параметра
@@ -96,7 +138,7 @@ class NelderMeadAbstract(OptimizerAbstract):
         # Вычисляем значение функции в точках
         self.y_points = numpy.zeros(self.dim + 1)
         for index, x in enumerate(self.x_points):
-            self.y_points[index] = self.calc_func(x)
+            self.y_points[index] = self.func(x)
 
         self.method_types = [0, 0, 0, 0]
         self.types_list = []  # В данном списке сохраняются типы работы алгоритма
@@ -115,17 +157,17 @@ class NelderMeadAbstract(OptimizerAbstract):
         self.start_time = time.time()  # Время начала работы
         prev_update_time = time.time()
         self.print_str = ''
-        for i in range(end_cond):
-            cur_time = time.time()
-            if (cur_time - prev_update_time) >= 1:
-                delta = cur_time - self.start_time
-                self.speed = i / delta
-                self.percent_done = math.floor(i * 100 / end_cond)
-                self.update_progress_bar(i)
-                prev_update_time = cur_time
+        for i in self.type_of_progress_bar(range(end_cond)):
+            if self.show_progress_bar:
+                cur_time = time.time()
+                if (cur_time - prev_update_time) >= 1:
+                    delta = cur_time - self.start_time
+                    self.speed = i / delta
+                    self.percent_done = math.floor(i * 100 / end_cond)
+                    self.update_progress_bar(i)
+                    prev_update_time = cur_time
 
             method_type = self.iteration()
-            self.variance_list.append(numpy.var(self.y_points))
             self.types_list.append(method_type)
             cur_cost = numpy.min(self.y_points)
             self.cost_list.append(cur_cost)
@@ -161,7 +203,8 @@ class NelderMeadAbstract(OptimizerAbstract):
         end_time = time.time()
         total_time = end_time - self.start_time
         self.percent_done = math.floor(amount_of_iterations * 100 / end_cond)
-        self.update_progress_bar(amount_of_iterations)
+        if self.show_progress_bar:
+            self.update_progress_bar(amount_of_iterations)
         _, _, l_index = self.find_points()  # Определяем точку с нименьшим значением функции
         result = OptimizeResult(is_converged, amount_of_iterations, total_time, self.cost_list, exit_code,
                                 reason_of_break, self.x_points[l_index])
@@ -177,7 +220,8 @@ class NelderMeadAbstract(OptimizerAbstract):
             self.dot_str += '.'
             self.amount_of_dots += 1
             speed_str = '{:.3f}'.format(self.speed)
-            self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(self.percent_done) + '%) ' + speed_str + ' it\s'
+            self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(
+                self.percent_done) + '%) ' + speed_str + ' it\s'
             sys.stderr.write('\r' + self.print_str)
 
     def iteration(self):
@@ -186,13 +230,13 @@ class NelderMeadAbstract(OptimizerAbstract):
         self.x_center = self.calculate_center()  # Вычисляем центр масс
         self.x_reflected = self.calculate_reflected_point()  # Вычисляем отраженную
         # точку
-        y_reflected = self.calc_func(self.x_reflected)
+        y_reflected = self.func(self.x_reflected)
         # Далее мы делаем ряд действий, в зависимости от соотношения между значениями функции в найденных точках
         # Объяснять подробно нет смысла, так что смотри просто "Метод Нелдера - Мида" в вики
         if y_reflected < self.y_points[self.l_index]:
             method_type = 0
             x_stretch = self.calculate_stretched_point()
-            y_stretch = self.calc_func(x_stretch)
+            y_stretch = self.func(x_stretch)
             if y_stretch < self.y_points[self.l_index]:
                 self.x_points[self.h_index] = x_stretch
                 self.y_points[self.h_index] = y_stretch
@@ -211,7 +255,7 @@ class NelderMeadAbstract(OptimizerAbstract):
                 self.y_points[self.h_index] = y_reflected
 
             x_compress = self.calculate_compressed_point()
-            y_compress = self.calc_func(x_compress)
+            y_compress = self.func(x_compress)
             if y_compress < self.y_points[self.h_index]:
                 method_type = 2
                 self.x_points[self.h_index] = x_compress
@@ -219,7 +263,8 @@ class NelderMeadAbstract(OptimizerAbstract):
             else:
                 method_type = 3
                 self.compress_simplex()
-                self.y_points = numpy.array(list(map(self.calc_func, self.x_points)))
+                for index, point in enumerate(self.x_points):
+                    self.y_points[index] = self.func(point)
         return method_type
 
     def create_points(self):
@@ -266,9 +311,7 @@ class NelderMeadAbstract(OptimizerAbstract):
 
     def calculate_reflected_point(self):
         # В данной функции выполняется отражение точки h относительно центра масс
-        x_h = self.x_points[self.h_index]
-        x_reflected = ((1 + self.alpha) * self.x_center) - (self.alpha * x_h)
-        return x_reflected
+        pass
 
     def calculate_stretched_point(self):
         # В данной функции выполняется растяжение в направлении, соединяющим h, center и reflected
@@ -292,17 +335,3 @@ class NelderMeadAbstract(OptimizerAbstract):
 
     def return_types_list(self):
         return self.types_list
-
-    @staticmethod
-    def average(data):
-        # Вычисление среднего значения
-        return sum(data) / len(data)
-
-    @staticmethod
-    def variance(data):
-        # Вычисление дисперсии
-        mean_data = NelderMeadAbstract.average(data)
-        sum_var = 0
-        for item in data:
-            sum_var += (item - mean_data) ** 2
-        return sum_var / len(data)

@@ -1,4 +1,1 @@
 from physlearn.Optimizer.DifferentialEvolution.DifferentialEvolution import DifferentialEvolution
-from physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutionAbstract import DifferentialEvolutionAbstract
-from physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutionEx import DifferentialEvolutionEx
-from physlearn.Optimizer.DifferentialEvolution.DifferentialEvolutianNew import DifferentialEvolutionNew

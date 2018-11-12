@@ -47,15 +47,10 @@ class Pauell:
             self.x_tilda = 0.5 * up_part / down_part
             self.f_tilda = func(self.x_tilda)
 
-            #print(self.f_min, self.f_tilda)
             check1 = abs(self.f_min - self.f_tilda)
             check2 = abs(self.x_min - self.x_tilda)
-            #print(check1, check2)
-            #print(check1<self.epsilon1, check2<self.epsilon2)
-            #print('-----------------')
 
             if (check1 < self.epsilon1) and (check2 < self.epsilon2):
-                #print('HUI')
                 return self.x_min, self.f_min
             else:
                 if (self.x[0] >= self.x_tilda) and (self.x[2] <= self.x_tilda):
@@ -71,7 +66,6 @@ class Pauell:
                 else:
                     self.x[0] = self.x_tilda
                     self.if_calc = False
-        #print('HUI2')
         return self.x_tilda, self.f_tilda
 
     def calc_points(self):
