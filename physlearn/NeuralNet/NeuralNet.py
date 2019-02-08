@@ -249,7 +249,7 @@ class NeuralNet:
 
     def run(self, inputs):
         # Метод вычисляет выход НС на входных данных inputs
-        result = self.calc(self.output, {self.x: inputs})
+        result = self.calc(self.output, inputs)
         return result
 
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -300,7 +300,7 @@ class NeuralNet:
             self.cur_net_num -= 1
             return output_tensor
         else:
-            self.output[0] = self.outputs[-1]
+            self.outputs[0] = self.outputs[-1]
             self.layers[0] = self.layers[-1]
             self.output = self.outputs[-1]
             self.outputs.pop()
