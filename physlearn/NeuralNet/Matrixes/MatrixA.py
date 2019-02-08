@@ -8,8 +8,9 @@ class MatrixA:
         self.matrix = matrix
         self.shape = shape
 
-    def return_assign_list(self, unroll_vector):
+    def roll_matrix(self, unroll_vector):
         pass
 
     def __mul__(self, x):
         pass
+
