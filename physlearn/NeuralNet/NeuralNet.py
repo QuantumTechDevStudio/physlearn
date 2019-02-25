@@ -238,6 +238,7 @@ class NeuralNet:
         self.outputs.append(cur_output)
         self.dim = self.unroll_breaks[-1]
         self.cur_net_num += 1
+
     # ---------------------------------------------------------------------------------------------------------------- #
     # ---------------------------------------Методы, вычисляющие значение НС------------------------------------------ #
     # ---------------------------------------------------------------------------------------------------------------- #
@@ -258,7 +259,7 @@ class NeuralNet:
 
     def return_graph(self):
         # Метод возвраащет выходной тензор НС
-        return self.output
+        return self.outputs[-1]
 
     def return_session(self):
         # Метод вовращает tf.Session()
@@ -272,13 +273,7 @@ class NeuralNet:
     # ----------------------------------Методы, проводящие манипуляции с матрицами весов------------------------------ #
     # ---------------------------------------------------------------------------------------------------------------- #
 
-    def roll_matrixes(self, unroll_vector, train_mode=False):
-        # Метод "сворачивает" unroll_vector обратно в матрицы и подставляет их в качестве матриц весов
-        # Метод имеет два режима работы
-        # train_mode=False - по матрицам, полученным из unroll_vector строится новая НС, отвечающиая этим матрицам.
-        # Затем эта нейросеть заменяет собой предыдущую. В этом режиме метод ничего не возвращает
-        # train_mode=True - метод строит НС по матрицам, получаемым из unroll_vector, после чего возвращает выходной
-        # тензор полученной НС, а все остальное удаляется
+    def roll_matrixes(self, unroll_vector):
         if not self.if_compile:
             sys.stderr.write('Compile model before roll matrixes')
             return None
@@ -291,38 +286,34 @@ class NeuralNet:
             # = левая граница вектора сдвига
             layer_unroll_vector = unroll_vector[left_layer_break:right_layer_break]
             unroll_vectors.append(layer_unroll_vector)
+
         self.create_net(unroll_vectors)
 
-        if train_mode:
-            output_tensor = self.outputs[-1]
-            self.outputs.pop()
-            self.layers.pop()
-            self.cur_net_num -= 1
-            return output_tensor
-        else:
-            self.outputs[0] = self.outputs[-1]
-            self.layers[0] = self.layers[-1]
-            self.output = self.outputs[-1]
-            self.outputs.pop()
-            self.layers.pop()
-            self.cur_net_num -= 1
+        self.output = self.outputs[-1]
+        self.outputs.pop(0)
+        self.layers.pop(0)
+        self.cur_net_num -= 1
 
-    # ---------------------------------------------------------------------------------------------------------------- #
-    # --------------------------------------------------Прочее-------------------------------------------------------- #
-    # ---------------------------------------------------------------------------------------------------------------- #
 
-    def init_params(self):
-        # Инициализация начальных параметров
-        self.sess.run(self.init)
+# ---------------------------------------------------------------------------------------------------------------- #
+# --------------------------------------------------Прочее-------------------------------------------------------- #
+# ---------------------------------------------------------------------------------------------------------------- #
 
-    def set_cost_func(self, cost_func):
-        self.cost_func = cost_func
+def init_params(self):
+    # Инициализация начальных параметров
+    self.sess.run(self.init)
 
-    def user_cost(self, params):
-        return self.cost_func(self, params)
 
-    def optimize(self, params_dict, cost_func, end_cond, min_cost):
-        self.set_cost_func(cost_func)
-        dim = self.unroll_breaks[-1]
-        res = optimize(params_dict, self.user_cost, dim, end_cond, min_cost=min_cost)
-        return res
+def set_cost_func(self, cost_func):
+    self.cost_func = cost_func
+
+
+def user_cost(self, params):
+    return self.cost_func(self, params)
+
+
+def optimize(self, params_dict, cost_func, end_cond, min_cost):
+    self.set_cost_func(cost_func)
+    dim = self.unroll_breaks[-1]
+    res = optimize(params_dict, self.user_cost, dim, end_cond, min_cost=min_cost)
+    return res
