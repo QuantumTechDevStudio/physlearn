@@ -9,10 +9,9 @@ def rastrigin(x, n):
     return A * n + sum_part
 
 
-def rosenbrock(x):
+def rosenbrock(x, dim):
     s = 0
-    l = len(x)
-    for i in range(l - 1):
+    for i in range(dim - 1):
         s += 100 * (x[i + 1] - x[i] ** 2) ** 2 + (x[i] - 1) ** 2
     return s
 
