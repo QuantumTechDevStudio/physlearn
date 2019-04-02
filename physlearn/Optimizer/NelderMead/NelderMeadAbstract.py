@@ -9,7 +9,7 @@ from physlearn.Optimizer import OptimizeResult
 from physlearn.Optimizer.OptimizerAbstract import OptimizerAbstract
 
 
-class NelderMeadAbstradimct(OptimizerAbstract):
+class NelderMeadAbstract(OptimizerAbstract):
     # Переменные, в которых хранятся точки симплеска и значения функции в них
     x_points = None
     y_points = None

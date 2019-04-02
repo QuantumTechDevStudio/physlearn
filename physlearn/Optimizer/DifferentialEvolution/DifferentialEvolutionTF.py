@@ -54,6 +54,7 @@ class DifferentialEvolutionTF:
 
         sess.run(tf.global_variables_initializer())
         for _ in tqdm(range(end_cond)):
+            #print(self.funcs)
             _, funcs = sess.run([pop_ass, self.funcs], {placeholder: self.x})
             funcs = funcs
             cur_cost = min(funcs)

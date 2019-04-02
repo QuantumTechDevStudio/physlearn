@@ -12,5 +12,6 @@ setup(
     license='',
     author='andrey',
     author_email='',
-    description=''
+    description='',
+    install_requires=['numpy', 'tensorflow', 'tqdm']
 )
