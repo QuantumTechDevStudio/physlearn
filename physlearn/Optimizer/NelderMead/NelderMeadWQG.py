@@ -1,9 +1,9 @@
 import numpy
 
-from physlearn.Optimizer.NelderMead.NelderMead import NelderMeadAbstract
+from physlearn.Optimizer.NelderMead.NelderMead import NelderMead
 
 
-class NelderMeadWQG(NelderMeadAbstract):
+class NelderMeadWQG(NelderMead):
     sigma = 0
     grad_vector = None
 

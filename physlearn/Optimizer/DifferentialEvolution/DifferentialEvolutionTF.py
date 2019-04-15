@@ -1,12 +1,15 @@
+import time
+
 import numpy
 import tensorflow as tf
-from tqdm import tqdm
 
-tfe = tf.contrib.eager
+from physlearn.Optimizer.OptimizeResult import OptimizeResult
+from physlearn.Optimizer.OptimizerAbstract import OptimizerAbstract
 
 
-class DifferentialEvolutionTF:
-    def __init__(self):
+class DifferentialEvolutionTF(OptimizerAbstract):
+    def __init__(self, min_element=-1, max_element=1):
+        super().__init__(min_element, max_element)
         self.f = 0.5
         self.p = 0.9
         self.dim = -1
@@ -18,6 +21,22 @@ class DifferentialEvolutionTF:
         self.child_funcs = None
         self.x = None
 
+        self.sess = None
+        self.placeholder = None
+
+    def parse_params(self, params_dict):
+        self.f = params_dict['F']
+        self.p = params_dict['P']
+
+        if not (params_dict.get('number_of_individuals') is None):
+            self.set_number_of_individuals(params_dict['number_of_individuals'])
+        else:
+            self.set_number_of_individuals(self.dim * 5)
+
+        self.sess = params_dict['sess']
+        self.placeholder = params_dict['placeholder']
+        self.x = params_dict['x']
+
     def set_params(self, f, p):
         self.f = f
         self.p = p
@@ -28,16 +47,28 @@ class DifferentialEvolutionTF:
     def set_x(self, x):
         self.x = x
 
-    def optimize(self, func, dim, end_cond, placeholder=None, session=None):
+    def set_placeholder(self, placeholder):
+        self.placeholder = placeholder
+
+    def set_session(self, sess):
+        self.sess = sess
+
+    def optimize(self, func, dim, end_cond=None, max_time=None, min_func_value=None):
         cost_list = []
-        sess = session
         self.dim = dim
         self.func = func
+
+        if (self.placeholder is None) and (self.x is None):
+            placeholder_dict = {}
+        else:
+            placeholder_dict = {self.placeholder: self.x}
+
         population_np = numpy.zeros((self.number_of_individuals, dim))
         for i, _ in enumerate(population_np):
-            population_np[i] = numpy.random.uniform(-1, 1, dim)
+            population_np[i] = numpy.random.uniform(self.min_element, self.max_element, dim)
 
         self.population = tf.Variable(population_np, tf.double)
+        self.sess.run(tf.global_variables_initializer())
 
         self.funcs = tf.map_fn(func, self.population)
         partners_matrix = tf.cast(tf.random.shuffle(self.population), tf.double)
@@ -52,15 +83,34 @@ class DifferentialEvolutionTF:
         reshaped_func_mask = tf.reshape(func_mask, (self.number_of_individuals, 1))
         pop_ass = self.population.assign(reshaped_func_mask * child_matrix - (reshaped_func_mask - 1) * self.population)
 
-        sess.run(tf.global_variables_initializer())
-        for _ in tqdm(range(end_cond)):
-            #print(self.funcs)
-            _, funcs = sess.run([pop_ass, self.funcs], {placeholder: self.x})
-            funcs = funcs
-            cur_cost = min(funcs)
+        self.sess.run(tf.global_variables_initializer())
+        reason_of_break = 'Maximum iteration reached'
+        exit_code = -1
+        is_converged = False
+        i = 0
+        start_time = time.time()
+
+        while (end_cond is None) or (i <= end_cond):
+            i += 1
+            _, funcs = self.sess.run([pop_ass, self.funcs], placeholder_dict)
+            cur_cost = numpy.amin(funcs)
             cost_list.append(cur_cost)
 
-        funcs = list(sess.run(self.funcs, {placeholder: self.x}))
-        min_cost = min(funcs)
-        min_index = funcs.index(min_cost)
-        return self.population[min_index], cost_list
+            if (not (min_func_value is None)) and (cur_cost <= min_func_value):
+                reason_of_break = 'Minimum function value reached'
+                exit_code = 0
+                is_converged = True
+                break
+
+            cur_time = time.time() - start_time
+            if (not (max_time is None)) and (cur_time > max_time):
+                reason_of_break = 'Maximum time reached'
+                exit_code = -2
+                break
+
+        total_time = time.time() - start_time
+        funcs = self.sess.run(self.funcs, placeholder_dict)
+        min_index = numpy.argmin(funcs)
+        result = OptimizeResult(is_converged, i - 1, total_time, cost_list, exit_code,
+                                reason_of_break, self.population[min_index])
+        return result

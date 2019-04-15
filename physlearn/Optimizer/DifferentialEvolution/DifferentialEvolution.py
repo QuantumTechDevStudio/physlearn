@@ -1,6 +1,4 @@
-import sys
 import time
-import math
 
 import numpy
 
@@ -38,7 +36,7 @@ class DifferentialEvolution(OptimizerAbstract):
         self.update_func = None
         self.update_iter = -1
 
-    def set_amount_of_individuals(self, amount_of_individuals):
+    def set_number_of_individuals(self, amount_of_individuals):
         self.amount_of_individuals = amount_of_individuals
 
     def set_params(self, f, p):
@@ -49,26 +47,13 @@ class DifferentialEvolution(OptimizerAbstract):
         self.end_method = end_method
 
     def parse_params(self, params_dict):
-        if not (params_dict.get('f') is None):
-            self.f = params_dict['f']
+        self.f = params_dict['F']
+        self.p = params_dict['P']
 
-        if not (params_dict.get('p') is None):
-            self.p = params_dict['p']
-
-        if not (params_dict.get('amount_of_individuals') is None):
-            self.set_amount_of_individuals(params_dict['amount_of_individuals'])
+        if not (params_dict.get('number_of_individuals') is None):
+            self.set_number_of_individuals(params_dict['number_of_individuals'])
         else:
-            self.set_amount_of_individuals(self.dim * 5)
-
-    def update(self):
-        pass
-
-    def set_update_func(self, update_func, update_iter=1):
-        self.update_func = update_func
-        self.update_iter = update_iter
-
-    def func(self, params):
-        return []
+            self.set_number_of_individuals(self.dim * 5)
 
     def create_population(self):
         # Создаем популяцию
@@ -84,12 +69,7 @@ class DifferentialEvolution(OptimizerAbstract):
         return self.population[best_index]
 
     def iteration(self):
-        # print(self.cur_params)
         # Создаем необходимые матрицы, перемешиванием матрицы популяции
-        # cur_params = self.update_func()
-        # self.func_population = numpy.zeros(self.amount_of_individuals)
-        # for index in range(self.amount_of_individuals):
-        #    self.func_population[index] = self.func(self.population[index], cur_params)
         partners_matrix = numpy.random.permutation(self.population)
         a_matrix = numpy.random.permutation(self.population)
         b_matrix = numpy.random.permutation(self.population)
@@ -118,7 +98,7 @@ class DifferentialEvolution(OptimizerAbstract):
         for index in range(self.amount_of_individuals):
             self.func_population[index] = self.func(self.population[index])
 
-    def optimize(self, func, dim, end_cond, min_cost=1e-5):
+    def optimize(self, func, dim, end_cond=None, max_time=None, min_func_value=1e-5):
         # func - оптимизиуемая функция, должна принмать в качетсве параметра массив numpy.array размерности dim
         # dim - размерность
         # amount_of_individuals - количество особей
@@ -130,70 +110,38 @@ class DifferentialEvolution(OptimizerAbstract):
         self.func = func
         for index, item in enumerate(self.population):
             self.func_population[index] = self.func(item)
-        self.update()
         # Каждый массив: numpy.array([1, 2, ..., amount_of_individuals])
 
         # каждой особи в популяции значении функции
         self.child_funcs = numpy.zeros(self.amount_of_individuals)
         # Переменные, в которых сохраняется результат
-        reason_of_break = ''  # Причина выхода
-        amount_of_iterations = 0  # Количество выполненных итераций
-        exit_code = -100  # Код выхода
+        reason_of_break = 'Maximum iterations reached'  # Причина выхода
+        exit_code = -1  # Код выхода
         is_converged = False  # Сошелся алгоритм или нет
         self.cost_list = []  # Список, содержащий значения лучшей функции на каждой итерации
 
-        self.dot_str = ''
-        self.print_str = ''
-
-        if self.update_iter < 0:
-            self.update_iter = end_cond + 1
-
         self.start_time = time.time()
-        for i in range(end_cond):
-            if i != 0:
-                cur_time = time.time()
-                delta = cur_time - self.start_time
-                self.speed = i / delta
-                self.update_pb_iter = math.ceil(self.speed * 1)
-                self.percent_done = math.floor(i * 100 / end_cond)
-
-            if (i % self.update_pb_iter) == 0:
-                self.update_progress_bar(i)
-
-            if (i % self.update_iter) == 0:
-                self.update()
+        i = 0
+        while (end_cond is None) or (i <= end_cond):
+            i += 1
             self.iteration()
             cur_cost = numpy.min(self.func_population)
             self.cost_list.append(cur_cost)
-            if cur_cost <= min_cost:
+            if (not (min_func_value is None)) and (cur_cost <= min_func_value):
                 reason_of_break = 'Minimum cost reached'
                 exit_code = 0
-                amount_of_iterations = i
                 is_converged = True
                 break
 
-            if i == (end_cond - 1):
-                reason_of_break = 'Maximum iterations reached'
-                exit_code = -1
-                amount_of_iterations = i + 1
+            cur_time = time.time() - self.start_time
+            if (not (max_time is None)) and (cur_time >= max_time):
+                reason_of_break = 'Maximum time reached'
+                exit_code = -2
                 is_converged = False
+                break
 
         end_time = time.time()
         total_time = end_time - self.start_time
-        self.percent_done = 100
-        self.update_progress_bar(end_cond)
-        result = OptimizeResult(is_converged, amount_of_iterations, total_time, self.cost_list, exit_code,
+        result = OptimizeResult(is_converged, i - 1, total_time, self.cost_list, exit_code,
                                 reason_of_break, self.choose_best_individual())
         return result
-
-    def update_progress_bar(self, i):
-        eraser = ''.ljust(len(self.print_str))
-        sys.stderr.write('\r' + eraser)
-        if self.amount_of_dots == 4:
-            self.dot_str = ''
-            self.amount_of_dots = 0
-        self.dot_str += '.'
-        self.amount_of_dots += 1
-        speed_str = '{:.3f}'.format(self.speed)
-        self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(self.percent_done) + '%) ' + speed_str + ' it\s'
-        sys.stderr.write('\r' + self.print_str)

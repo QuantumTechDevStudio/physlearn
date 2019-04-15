@@ -1,2 +1,3 @@
 from physlearn.Optimizer.OptimizeResult import OptimizeResult
 from physlearn.Optimizer.OptimizerAbstract import OptimizerAbstract
+from physlearn.Optimizer.Optimizer import Optimizer

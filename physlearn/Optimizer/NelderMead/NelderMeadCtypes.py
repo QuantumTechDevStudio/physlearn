@@ -6,11 +6,10 @@ import math
 
 import numpy
 
-from physlearn.Optimizer.NelderMead import NelderMeadAbstract
 from physlearn.Optimizer.OptimizeResult import OptimizeResult
 
 
-class NelderMeadCtypes(NelderMeadAbstract):
+class NelderMeadCtypes:
     prev_update_time = 0
 
     module = str(sys.modules['physlearn.Optimizer.NelderMead'])
@@ -37,18 +36,11 @@ class NelderMeadCtypes(NelderMeadAbstract):
     def calc_func(self, params):
         return self.func(params)
 
-    def update_progress_b(self, i, speed, percent):
-        eraser = ''.ljust(len(self.print_str))
-        sys.stderr.write(eraser + '\r')
-        if self.amount_of_dots == 4:
-            self.dot_str = ''
-            self.amount_of_dots = 0
-        self.dot_str += '.'
-        self.amount_of_dots += 1
-        speed_str = '{:.3f}'.format(speed)
-        self.print_str = self.dot_str.ljust(5) + str(i) + ' (' + str(
-            percent) + '%) ' + speed_str + ' it\s'
-        sys.stderr.write(self.print_str + '\r')
+    def create_points(self):
+        points = []
+        for i in range(self.dim + 1):  # Создаем массив точек размера dim + 1 (так требуется по методу)
+            points.append(numpy.random.uniform(self.min_element, self.max_element, self.dim))
+        return numpy.array(points)
 
     def optimize(self, func, dim, end_cond, min_cost=1e-5):
         # func - оптимизируемая функция, должна принимать numpy.array соотвесвтующей размерности в качесвте параметра

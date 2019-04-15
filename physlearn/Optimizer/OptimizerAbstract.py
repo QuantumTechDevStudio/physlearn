@@ -5,7 +5,7 @@ class OptimizerAbstract:
         self.min_element = min_element
         self.max_element = max_element
 
-    def optimize(self, func, dim, end_cond, min_cost=1e-5):
+    def optimize(self, func, dim, end_cond=None, max_time=None, min_func_value=1e-5):
         pass
 
     def parse_params(self, params_dict):
