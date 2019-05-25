@@ -1,0 +1,469 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>NeuralNet.NeuralNet &#8212; NeuralNet  documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for NeuralNet.NeuralNet</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">Tree</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+
+<span class="kn">from</span> <span class="nn">physlearn.NeuralNet.Layer.LayerBlocks</span> <span class="k">import</span> <span class="n">LayerBlocks</span>
+<span class="kn">from</span> <span class="nn">physlearn.NeuralNet.Layer.LayerFC</span> <span class="k">import</span> <span class="n">LayerFC</span>
+<span class="kn">from</span> <span class="nn">physlearn.Optimizer.Optimizer</span> <span class="k">import</span> <span class="n">optimize</span>
+
+
+<div class="viewcode-block" id="NeuralNet"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet">[docs]</a><span class="k">class</span> <span class="nc">NeuralNet</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Neural net class. Implements the main function to create, compile, train and run feed-forward neural networks.</span>
+
+<span class="sd">    Main methods:</span>
+
+<span class="sd">    add_input_layer - add input layer to NN</span>
+
+<span class="sd">    add - add layer to neural network</span>
+
+<span class="sd">    add_output_layer - add output layer to neural network</span>
+
+<span class="sd">    add_sub_nets - add sub nets to neural network</span>
+
+<span class="sd">    is_correct - verifies the teh sub nets parameters are correct</span>
+
+<span class="sd">    load_net_from_file - load neural net from special XML file</span>
+
+<span class="sd">    compile - compile neural networks. All next methods doesn&#39;t work without compiled NN</span>
+
+<span class="sd">    run - calc output of neural network on some inputs data</span>
+
+<span class="sd">    calc - calc any tf.Tensor which depends of neural networks</span>
+
+<span class="sd">    return_graph - returns tf.Tensor which respect to output layer</span>
+
+<span class="sd">    return_session - returns tf.Session</span>
+
+<span class="sd">    return_unroll_dim - returns dim of unroll vector</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># ----------------------------------Здесь задаются стандартные функции активации---------------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+    <span class="c1"># Просто тождественная функция</span>
+<div class="viewcode-block" id="NeuralNet.linear"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.linear">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">x</span></div>
+
+<div class="viewcode-block" id="NeuralNet.sigmoid"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.sigmoid">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># -------------------------------------------------Конструктор---------------------------------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_element</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_element</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Constructor for NeuralNet class.</span>
+
+<span class="sd">        :param min_element: double, min element in random generation of weight matrixes</span>
+<span class="sd">        :param max_element: double, max element in random generation of weight matrixes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Присваивание значений, сброс к начальным условиям</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">min_element</span> <span class="o">=</span> <span class="n">min_element</span>  <span class="c1"># Минимальное значение при случайной генерации матриц весов</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_element</span> <span class="o">=</span> <span class="n">max_element</span>  <span class="c1"># Максимальное</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">design</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Каждый элемент этого списка хранит в себе либо описание отдельного слоя</span>
+        <span class="c1"># (количество нейронов, функция активации), либо подсети</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">design_len</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Длина self.design</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tf_layers</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Графы вычислений для каждого слоя</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)]</span>  <span class="c1"># Границы каждого слоя в развернутом векторе</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># Здесь хранятся слои, как объекты типа Layer</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeholders_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Словарь вида (tf.placeholder: numpy.array). Отвечает за матрицы весов.</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Размерность развернутого вектора</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">if_compile</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Была ли НС скомпилированна</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">correctness</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># Все ли корректно в параметрах нейроной сети</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Placeholder для входных данных</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Placeholder для обучающих выходных данных</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Переменная ценовой функции</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Сессия</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Начальные значения</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Переменная выхода НС</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_type</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Тип обучения</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amount_of_outputs</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Количество выходов</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_activation_func</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Функция активации выходов</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_func</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Пользовательская ценовая функция</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimize_params_dict</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Параметры оптимизации</span>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># -------------------------------------Методы, которые задают архитектуру НС-------------------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+<div class="viewcode-block" id="NeuralNet.add"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount_of_units</span><span class="p">,</span> <span class="n">activation_func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adding full-connected (FC) layer</span>
+
+<span class="sd">        :param amount_of_units: int, amount of neurons in layer</span>
+<span class="sd">        :param activation_func: function, activation function fro this layer</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">current_layer</span> <span class="o">=</span> <span class="p">(</span><span class="n">amount_of_units</span><span class="p">,</span> <span class="n">activation_func</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_layer</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeuralNet.add_sub_nets"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.add_sub_nets">[docs]</a>    <span class="k">def</span> <span class="nf">add_sub_nets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sub_nets</span><span class="p">,</span> <span class="n">activation_funcs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Adding sub nets</span>
+
+<span class="sd">        :param sub_nets: iterable, list of sub nets</span>
+<span class="sd">        :param activation_funcs:  iterable, list of functions, length must be same as amount of</span>
+<span class="sd">            layers in every sub net</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_correct</span><span class="p">(</span><span class="n">sub_nets</span><span class="p">):</span>
+            <span class="n">current_layer</span> <span class="o">=</span> <span class="p">(</span><span class="n">sub_nets</span><span class="p">,</span> <span class="n">activation_funcs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_layer</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">correctness</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="NeuralNet.is_correct"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.is_correct">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_correct</span><span class="p">(</span><span class="n">sub_nets</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Verifies the teh sub nets parameters are correct: amount of layers in each sub net must be the same, if</span>
+<span class="sd">        input (output) layer is in one sub net, it must be in each sub net.</span>
+
+<span class="sd">        :param sub_nets: iterable, list of sub nets</span>
+<span class="sd">        :return: bool, True if everything is correct, False otherwise</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">amount_of_layers</span> <span class="o">=</span> <span class="n">sub_nets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">return_amount_of_layers</span><span class="p">()</span>
+        <span class="n">input_set</span> <span class="o">=</span> <span class="n">sub_nets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">return_input_set</span><span class="p">()</span>
+        <span class="n">output_set</span> <span class="o">=</span> <span class="n">sub_nets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">return_output_set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">sub_net</span> <span class="ow">in</span> <span class="n">sub_nets</span><span class="p">:</span>
+            <span class="n">cur_amount_of_layers</span> <span class="o">=</span> <span class="n">sub_net</span><span class="o">.</span><span class="n">return_amount_of_layers</span><span class="p">()</span>
+            <span class="n">cur_input_set</span> <span class="o">=</span> <span class="n">sub_net</span><span class="o">.</span><span class="n">return_input_set</span><span class="p">()</span>
+            <span class="n">cur_output_set</span> <span class="o">=</span> <span class="n">sub_net</span><span class="o">.</span><span class="n">return_output_set</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">amount_of_layers</span> <span class="o">!=</span> <span class="n">cur_amount_of_layers</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Amount of layers must be same in all sub nets&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">cur_input_set</span> <span class="o">!=</span> <span class="n">input_set</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Input layer must be in all sub nets&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">cur_output_set</span> <span class="o">!=</span> <span class="n">output_set</span><span class="p">:</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;Output layer must be in all sub nets&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="NeuralNet.add_input_layer"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.add_input_layer">[docs]</a>    <span class="k">def</span> <span class="nf">add_input_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount_of_units</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add input layer to neural network.</span>
+
+<span class="sd">        :param amount_of_units: int, amount of neurons in input layer.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">amount_of_units</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeuralNet.add_output_layer"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.add_output_layer">[docs]</a>    <span class="k">def</span> <span class="nf">add_output_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amount_of_units</span><span class="p">,</span> <span class="n">output_activation_func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add output layer to neural network</span>
+
+<span class="sd">        :param amount_of_units: int, amount of neurons in output layer</span>
+<span class="sd">        :param output_activation_func: function, activation func of output layer</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amount_of_outputs</span> <span class="o">=</span> <span class="n">amount_of_units</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_activation_func</span> <span class="o">=</span> <span class="n">output_activation_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">amount_of_outputs</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_activation_func</span><span class="p">)</span></div>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># ------------------------------------------Загрузка НС из файла-------------------------------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+<div class="viewcode-block" id="NeuralNet.load_net_from_file"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.load_net_from_file">[docs]</a>    <span class="k">def</span> <span class="nf">load_net_from_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load neural net design from XML file.</span>
+
+<span class="sd">        :param filename: string, path to XML file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">func_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;sigmoid&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">}</span>
+        <span class="n">net_xml</span> <span class="o">=</span> <span class="n">Tree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">net_root</span> <span class="o">=</span> <span class="n">net_xml</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">net_root</span><span class="p">:</span>
+            <span class="n">layer_type</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">tag</span>
+            <span class="k">if</span> <span class="n">layer_type</span> <span class="o">==</span> <span class="s1">&#39;input_layer&#39;</span><span class="p">:</span>
+                <span class="n">amount_of_neurons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;amount_of_neurons&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_input_layer</span><span class="p">(</span><span class="n">amount_of_neurons</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">layer_type</span> <span class="o">==</span> <span class="s1">&#39;output_layer&#39;</span><span class="p">:</span>
+                <span class="n">amount_of_neurons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;amount_of_neurons&#39;</span><span class="p">])</span>
+                <span class="n">activation_func</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;activation&#39;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_output_layer</span><span class="p">(</span><span class="n">amount_of_neurons</span><span class="p">,</span> <span class="n">func_dict</span><span class="p">[</span><span class="n">activation_func</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">amount_of_neurons</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;amount_of_neurons&#39;</span><span class="p">])</span>
+                <span class="n">activation_func</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;activation&#39;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">amount_of_neurons</span><span class="p">,</span> <span class="n">func_dict</span><span class="p">[</span><span class="n">activation_func</span><span class="p">])</span></div>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># --------------------------------Создание графа TF и все необходимые для этого методы --------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+<div class="viewcode-block" id="NeuralNet.compile"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.compile">[docs]</a>    <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compile neural network (create tf graph corresponding to neural network). Without running this method a lot</span>
+<span class="sd">        of methods can not working.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Здесь создается граф вычислений НС</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>  <span class="c1"># Создание сессии</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">if_compile</span><span class="p">:</span>  <span class="c1"># Проверка, была ли скомпилированна НС ранее...</span>
+            <span class="c1"># ...если да - сброс к начальным параметрам</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tf_layers</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#    self.add(self.amount_of_outputs, self.output_activation_func)  # Добавление выходного слоя</span>
+        <span class="c1"># Выходной слой добавляется здесь, так как необходиом гарантировать, что он является последним</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">if_compile</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>  <span class="c1"># Создание placeholder для входных данных...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>  <span class="c1"># ...и обучающих выходов</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_layers</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">global_variables_initializer</span><span class="p">()</span>  <span class="c1"># Инициализатор переменных</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">)</span>  <span class="c1"># Инициализация переменных</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">current_layer</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activation_func</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">weight_matrix</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">bias_vector</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">prev_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tf_layers</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">current_layer</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">activation_func</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">weight_matrix</span> <span class="o">*</span> <span class="n">prev_layer</span> <span class="o">+</span> <span class="n">layer</span><span class="o">.</span><span class="n">bias_vector</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tf_layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">current_layer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tf_layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Выход нейронной сети - это последний слой =&gt; послдений элемент tf_layers</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">design_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">layer</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_fc_layer</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_add_sub_nets_layers</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_sub_nets_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">layer</span><span class="p">):</span>
+        <span class="n">sub_sizes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">sub_nets</span> <span class="o">=</span> <span class="n">layer</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">sub_net</span> <span class="ow">in</span> <span class="n">sub_nets</span><span class="p">:</span>
+            <span class="n">sub_sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_net</span><span class="o">.</span><span class="n">return_sizes</span><span class="p">())</span>
+        <span class="n">weight_sizes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">activation_funcs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">amount_of_layers</span> <span class="o">=</span> <span class="n">sub_nets</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">amount_of_layers</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">amount_of_layers</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">cur_layer</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">activation_funcs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">sub_net_sizes</span> <span class="ow">in</span> <span class="n">sub_sizes</span><span class="p">:</span>
+                <span class="n">cur_layer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sub_net_sizes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">weight_sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_layer</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sub_layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weight_sizes</span><span class="p">):</span>
+            <span class="n">weight_dim</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">shape</span><span class="p">:</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sub_layer</span><span class="p">)))</span>
+            <span class="n">bias_dim</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">shape</span><span class="p">:</span> <span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sub_layer</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+=</span> <span class="n">weight_dim</span> <span class="o">+</span> <span class="n">bias_dim</span>
+            <span class="n">weight_breaker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">weight_dim</span>
+            <span class="n">bias_breaker</span> <span class="o">=</span> <span class="n">weight_breaker</span> <span class="o">+</span> <span class="n">bias_dim</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">weight_breaker</span><span class="p">,</span> <span class="n">bias_breaker</span><span class="p">))</span>
+            <span class="n">cur_layer</span> <span class="o">=</span> <span class="n">LayerBlocks</span><span class="p">(</span><span class="n">sub_layer</span><span class="p">,</span> <span class="n">activation_funcs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_layer</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">current_layer_units</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">sub_nets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">sub_net</span> <span class="ow">in</span> <span class="n">sub_nets</span><span class="p">:</span>
+                <span class="n">current_layer_units</span> <span class="o">+=</span> <span class="n">sub_net</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">next_layer_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">current_layer_units</span> <span class="o">*</span> <span class="n">next_layer_units</span>  <span class="c1"># Количество элементов матрицы</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+=</span> <span class="n">size</span> <span class="o">+</span> <span class="n">next_layer_units</span>
+            <span class="n">weight_breaker</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Индекс конца матрицы весов</span>
+            <span class="c1"># в unroll векторе - ее размер, плюс сдвиг, связанный с предыдущими матрицами</span>
+            <span class="n">bias_breaker</span> <span class="o">=</span> <span class="n">weight_breaker</span> <span class="o">+</span> <span class="n">next_layer_units</span>  <span class="c1"># Аналогично</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">weight_breaker</span><span class="p">,</span> <span class="n">bias_breaker</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">activation_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">activation_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">cur_layer</span> <span class="o">=</span> <span class="n">LayerFC</span><span class="p">((</span><span class="n">next_layer_units</span><span class="p">,</span> <span class="n">current_layer_units</span><span class="p">),</span> <span class="n">activation_func</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_layer</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_fc_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design_len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">current_layer_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">next_layer_units</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sub_nets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">next_layer_units</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">sub_net</span> <span class="ow">in</span> <span class="n">sub_nets</span><span class="p">:</span>
+                    <span class="n">next_layer_units</span> <span class="o">+=</span> <span class="n">sub_net</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="n">current_layer_units</span> <span class="o">*</span> <span class="n">next_layer_units</span>  <span class="c1"># Количество элементов матрицы</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim</span> <span class="o">+=</span> <span class="n">size</span> <span class="o">+</span> <span class="n">next_layer_units</span>
+            <span class="n">weight_breaker</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Индекс конца матрицы весов</span>
+            <span class="c1"># в unroll векторе - ее размер, плюс сдвиг, связанный с предыдущими матрицами</span>
+            <span class="n">bias_breaker</span> <span class="o">=</span> <span class="n">weight_breaker</span> <span class="o">+</span> <span class="n">next_layer_units</span>  <span class="c1"># Аналогично</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">weight_breaker</span><span class="p">,</span> <span class="n">bias_breaker</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">activation_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">activation_func</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">design</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cur_layer</span> <span class="o">=</span> <span class="n">LayerFC</span><span class="p">((</span><span class="n">next_layer_units</span><span class="p">,</span> <span class="n">current_layer_units</span><span class="p">),</span> <span class="n">activation_func</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cur_layer</span><span class="p">)</span>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># ---------------------------------------Методы, вычисляющие значение НС------------------------------------------ #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+<div class="viewcode-block" id="NeuralNet.calc"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.calc">[docs]</a>    <span class="k">def</span> <span class="nf">calc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">calc_var</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate any tf.Tensor which depends of neural network. Need a compiled NN.</span>
+
+<span class="sd">        :param calc_var: tf.Tensor, which you need to calculate</span>
+<span class="sd">        :param d: dictionary, input data for NN. In most cases d = {net.x: numpy.array([[...], [...],...])}</span>
+<span class="sd">        :return: numpy.array([[...], [...], ...]), calculated value of tf.Tensor calc_var</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">placeholders_dict</span><span class="p">)</span>  <span class="c1"># Добавляем в словарь d placeholder для матриц весов</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">calc_var</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeuralNet.run"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+        <span class="c1"># Вычисление результата работы НС на выходных данных inputs</span>
+        <span class="c1"># inputs = numpy.array([[...], ...])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="p">{</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">:</span> <span class="n">inputs</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># ------------------------------------Методы, возвращающие различные параметры НС--------------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+<div class="viewcode-block" id="NeuralNet.return_graph"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.return_graph">[docs]</a>    <span class="k">def</span> <span class="nf">return_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Возвращает TF Tensor, отвечающий выходному слою</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span></div>
+
+<div class="viewcode-block" id="NeuralNet.return_session"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.return_session">[docs]</a>    <span class="k">def</span> <span class="nf">return_session</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Возвращет TF session</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sess</span></div>
+
+<div class="viewcode-block" id="NeuralNet.return_unroll_dim"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.return_unroll_dim">[docs]</a>    <span class="k">def</span> <span class="nf">return_unroll_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Возвращает размерность &quot;развернутого&quot; вектора</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span></div>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># ----------------------------------Методы, проводящие манипуляции с матрицами весов------------------------------ #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+    <span class="k">def</span> <span class="nf">_assign_matrixes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">assign_list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeholders_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">assign_list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="NeuralNet.roll_matrixes"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.roll_matrixes">[docs]</a>    <span class="k">def</span> <span class="nf">roll_matrixes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">unroll_vector</span><span class="p">):</span>
+        <span class="c1"># Противоположно self.unroll_matrixes, roll_matrixes сворачивает матрицы из вектора обратно в нормальный вид</span>
+        <span class="n">assign_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+            <span class="n">left_weight_break</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Левая граница матрицы весов = правая гранница</span>
+            <span class="c1"># вектора сдвига предыдущего слоя</span>
+            <span class="n">right_weight_break</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Правая граница матрицы весов =</span>
+            <span class="c1"># = левая граница вектора сдвига</span>
+            <span class="n">right_bias_break</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Правая граница вектора сдвига</span>
+            <span class="c1"># Далее мы выделяем нужный нам фрагмент из развернутого вектра, и делаем его нужным размером</span>
+            <span class="n">weight_unroll_vector</span> <span class="o">=</span> <span class="n">unroll_vector</span><span class="p">[</span><span class="n">left_weight_break</span><span class="p">:</span><span class="n">right_weight_break</span><span class="p">]</span>
+            <span class="n">bias_unroll_vector</span> <span class="o">=</span> <span class="n">unroll_vector</span><span class="p">[</span><span class="n">right_weight_break</span><span class="p">:</span><span class="n">right_bias_break</span><span class="p">]</span>
+            <span class="n">assign_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">roll_matrix</span><span class="p">(</span><span class="n">weight_unroll_vector</span><span class="p">,</span> <span class="n">bias_unroll_vector</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_assign_matrixes</span><span class="p">(</span><span class="n">assign_list</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeuralNet.set_random_matrixes"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.set_random_matrixes">[docs]</a>    <span class="k">def</span> <span class="nf">set_random_matrixes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">unroll_vector</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min_element</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_element</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roll_matrixes</span><span class="p">(</span><span class="n">unroll_vector</span><span class="p">)</span></div>
+
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+    <span class="c1"># --------------------------------------------------Прочее-------------------------------------------------------- #</span>
+    <span class="c1"># ---------------------------------------------------------------------------------------------------------------- #</span>
+
+<div class="viewcode-block" id="NeuralNet.init_params"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.init_params">[docs]</a>    <span class="k">def</span> <span class="nf">init_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Инициализация начальных параметров</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeuralNet.set_cost_func"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.set_cost_func">[docs]</a>    <span class="k">def</span> <span class="nf">set_cost_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost_func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cost_func</span> <span class="o">=</span> <span class="n">cost_func</span></div>
+
+<div class="viewcode-block" id="NeuralNet.user_cost"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.user_cost">[docs]</a>    <span class="k">def</span> <span class="nf">user_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="NeuralNet.optimize"><a class="viewcode-back" href="../../NeuralNet.html#NeuralNet.NeuralNet.NeuralNet.optimize">[docs]</a>    <span class="k">def</span> <span class="nf">optimize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">params_dict</span><span class="p">,</span> <span class="n">cost_func</span><span class="p">,</span> <span class="n">end_cond</span><span class="p">,</span> <span class="n">min_cost</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_cost_func</span><span class="p">(</span><span class="n">cost_func</span><span class="p">)</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unroll_breaks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">optimize</span><span class="p">(</span><span class="n">params_dict</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_cost</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">end_cond</span><span class="p">,</span> <span class="n">min_cost</span><span class="o">=</span><span class="n">min_cost</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

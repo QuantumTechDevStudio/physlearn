@@ -1,0 +1,472 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>physlearn.NeuralNet package &#8212; physlearn  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="physlearn-neuralnet-package">
+<h1>physlearn.NeuralNet package<a class="headerlink" href="#physlearn-neuralnet-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-physlearn.NeuralNet.Layer">
+<span id="physlearn-neuralnet-layer-module"></span><h2>physlearn.NeuralNet.Layer module<a class="headerlink" href="#module-physlearn.NeuralNet.Layer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.Layer.Layer">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.Layer.</code><code class="descname">Layer</code><span class="sig-paren">(</span><em>shape</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/Layer.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.Layer.Layer.activation_func">
+<code class="descname">activation_func</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer.activation_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.Layer.Layer.bias_dim">
+<code class="descname">bias_dim</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer.bias_dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.Layer.Layer.bias_vector">
+<code class="descname">bias_vector</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer.bias_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.Layer.Layer.roll_matrix">
+<code class="descname">roll_matrix</code><span class="sig-paren">(</span><em>weight_unroll_vector</em>, <em>bias_unroll_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/Layer.html#Layer.roll_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer.roll_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.Layer.Layer.weight_matrix">
+<code class="descname">weight_matrix</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer.weight_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.Layer.Layer.weight_matrix_shape">
+<code class="descname">weight_matrix_shape</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.Layer.Layer.weight_matrix_shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.LayerBlocks">
+<span id="physlearn-neuralnet-layerblocks-module"></span><h2>physlearn.NeuralNet.LayerBlocks module<a class="headerlink" href="#module-physlearn.NeuralNet.LayerBlocks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.LayerBlocks.LayerBlocks">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.LayerBlocks.</code><code class="descname">LayerBlocks</code><span class="sig-paren">(</span><em>shape</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/LayerBlocks.html#LayerBlocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.LayerBlocks.LayerBlocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.NeuralNet.Layer.Layer" title="physlearn.NeuralNet.Layer.Layer"><code class="xref py py-class docutils literal"><span class="pre">physlearn.NeuralNet.Layer.Layer</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.LayerFC">
+<span id="physlearn-neuralnet-layerfc-module"></span><h2>physlearn.NeuralNet.LayerFC module<a class="headerlink" href="#module-physlearn.NeuralNet.LayerFC" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.LayerFC.LayerFC">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.LayerFC.</code><code class="descname">LayerFC</code><span class="sig-paren">(</span><em>shape</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/LayerFC.html#LayerFC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.LayerFC.LayerFC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.NeuralNet.Layer.Layer" title="physlearn.NeuralNet.Layer.Layer"><code class="xref py py-class docutils literal"><span class="pre">physlearn.NeuralNet.Layer.Layer</span></code></a></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.MatrixA">
+<span id="physlearn-neuralnet-matrixa-module"></span><h2>physlearn.NeuralNet.MatrixA module<a class="headerlink" href="#module-physlearn.NeuralNet.MatrixA" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.MatrixA.MatrixA">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.MatrixA.</code><code class="descname">MatrixA</code><span class="sig-paren">(</span><em>matrix</em>, <em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixA.html#MatrixA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixA.MatrixA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.MatrixA.MatrixA.matrix">
+<code class="descname">matrix</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.MatrixA.MatrixA.matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.MatrixA.MatrixA.return_assign_list">
+<code class="descname">return_assign_list</code><span class="sig-paren">(</span><em>unroll_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixA.html#MatrixA.return_assign_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixA.MatrixA.return_assign_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.MatrixA.MatrixA.set_matrix">
+<code class="descname">set_matrix</code><span class="sig-paren">(</span><em>matrix</em>, <em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixA.html#MatrixA.set_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixA.MatrixA.set_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.MatrixA.MatrixA.shape">
+<code class="descname">shape</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.MatrixA.MatrixA.shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.MatrixBlocks">
+<span id="physlearn-neuralnet-matrixblocks-module"></span><h2>physlearn.NeuralNet.MatrixBlocks module<a class="headerlink" href="#module-physlearn.NeuralNet.MatrixBlocks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.MatrixBlocks.MatrixBlocks">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.MatrixBlocks.</code><code class="descname">MatrixBlocks</code><span class="sig-paren">(</span><em>matrix</em>, <em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixBlocks.html#MatrixBlocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixBlocks.MatrixBlocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.NeuralNet.MatrixA.MatrixA" title="physlearn.NeuralNet.MatrixA.MatrixA"><code class="xref py py-class docutils literal"><span class="pre">physlearn.NeuralNet.MatrixA.MatrixA</span></code></a></p>
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.MatrixBlocks.MatrixBlocks.break_points">
+<code class="descname">break_points</code><em class="property"> = [0]</em><a class="headerlink" href="#physlearn.NeuralNet.MatrixBlocks.MatrixBlocks.break_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.MatrixBlocks.MatrixBlocks.return_assign_list">
+<code class="descname">return_assign_list</code><span class="sig-paren">(</span><em>unroll_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixBlocks.html#MatrixBlocks.return_assign_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixBlocks.MatrixBlocks.return_assign_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.MatrixGen">
+<span id="physlearn-neuralnet-matrixgen-module"></span><h2>physlearn.NeuralNet.MatrixGen module<a class="headerlink" href="#module-physlearn.NeuralNet.MatrixGen" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.MatrixGen.MatrixGen">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.MatrixGen.</code><code class="descname">MatrixGen</code><span class="sig-paren">(</span><em>matrix</em>, <em>shape</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixGen.html#MatrixGen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixGen.MatrixGen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.NeuralNet.MatrixA.MatrixA" title="physlearn.NeuralNet.MatrixA.MatrixA"><code class="xref py py-class docutils literal"><span class="pre">physlearn.NeuralNet.MatrixA.MatrixA</span></code></a></p>
+<dl class="method">
+<dt id="physlearn.NeuralNet.MatrixGen.MatrixGen.return_assign_list">
+<code class="descname">return_assign_list</code><span class="sig-paren">(</span><em>unroll_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/MatrixGen.html#MatrixGen.return_assign_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.MatrixGen.MatrixGen.return_assign_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.NeuralNet">
+<span id="physlearn-neuralnet-neuralnet-module"></span><h2>physlearn.NeuralNet.NeuralNet module<a class="headerlink" href="#module-physlearn.NeuralNet.NeuralNet" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.NeuralNet.</code><code class="descname">NeuralNet</code><span class="sig-paren">(</span><em>min_element=-1</em>, <em>max_element=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>amount_of_units</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding full-connected (FC) layer</p>
+<dl class="docutils">
+<dt>Keyword arguments:</dt>
+<dd>amount_of_units - amount of neurons in layer
+activation_func - activation function of this layer</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add_fc_layer">
+<code class="descname">add_fc_layer</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add_fc_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add_fc_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add_input_layer">
+<code class="descname">add_input_layer</code><span class="sig-paren">(</span><em>amount_of_units</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add_input_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add_input_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add_layer_ex">
+<code class="descname">add_layer_ex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add_layer_ex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add_layer_ex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add_output_layer">
+<code class="descname">add_output_layer</code><span class="sig-paren">(</span><em>amount_of_units</em>, <em>output_activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add_output_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add_output_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add_sub_nets">
+<code class="descname">add_sub_nets</code><span class="sig-paren">(</span><em>sub_nets</em>, <em>activation_funcs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add_sub_nets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add_sub_nets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adding sub nets</p>
+<dl class="docutils">
+<dt>Keyword arguments:</dt>
+<dd>sub_nets – list of sub nets
+activation_funcs – list of functions, length must be same as amount of layers in every sub net</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.add_sub_nets_layers">
+<code class="descname">add_sub_nets_layers</code><span class="sig-paren">(</span><em>index</em>, <em>layer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.add_sub_nets_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.add_sub_nets_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.assign_matrixes">
+<code class="descname">assign_matrixes</code><span class="sig-paren">(</span><em>assign_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.assign_matrixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.assign_matrixes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.calc">
+<code class="descname">calc</code><span class="sig-paren">(</span><em>calc_var</em>, <em>d</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.calc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.calc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.calculate_cost">
+<code class="descname">calculate_cost</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.calculate_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.calculate_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.compile">
+<code class="descname">compile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.compile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.create_layer_matrixes">
+<code class="descname">create_layer_matrixes</code><span class="sig-paren">(</span><em>size</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.create_layer_matrixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.create_layer_matrixes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.create_layers">
+<code class="descname">create_layers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.create_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.create_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.create_unroll_vector">
+<em class="property">static </em><code class="descname">create_unroll_vector</code><span class="sig-paren">(</span><em>numpy_matrixes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.create_unroll_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.create_unroll_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.init_params">
+<code class="descname">init_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.init_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.init_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.is_correct">
+<em class="property">static </em><code class="descname">is_correct</code><span class="sig-paren">(</span><em>sub_nets</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.is_correct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.is_correct" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.linear">
+<em class="property">static </em><code class="descname">linear</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.linear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.linear" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.load_net_from_file">
+<code class="descname">load_net_from_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.load_net_from_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.load_net_from_file" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>params_dict</em>, <em>cost_func</em>, <em>end_cond</em>, <em>min_cost</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.optimize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.return_graph">
+<code class="descname">return_graph</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.return_graph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.return_graph" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.return_session">
+<code class="descname">return_session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.return_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.return_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.return_unroll_dim">
+<code class="descname">return_unroll_dim</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.return_unroll_dim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.return_unroll_dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.roll_matrixes">
+<code class="descname">roll_matrixes</code><span class="sig-paren">(</span><em>unroll_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.roll_matrixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.roll_matrixes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>inputs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.set_cost_func">
+<code class="descname">set_cost_func</code><span class="sig-paren">(</span><em>cost_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.set_cost_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.set_cost_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.set_random_matrixes">
+<code class="descname">set_random_matrixes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.set_random_matrixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.set_random_matrixes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.set_train_type">
+<code class="descname">set_train_type</code><span class="sig-paren">(</span><em>train_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.set_train_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.set_train_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.sigmoid">
+<em class="property">static </em><code class="descname">sigmoid</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.sigmoid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.sigmoid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.unroll_matrixes">
+<code class="descname">unroll_matrixes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.unroll_matrixes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.unroll_matrixes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.NeuralNet.NeuralNet.user_cost">
+<code class="descname">user_cost</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/NeuralNet.html#NeuralNet.user_cost"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.NeuralNet.NeuralNet.user_cost" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet.SubNet">
+<span id="physlearn-neuralnet-subnet-module"></span><h2>physlearn.NeuralNet.SubNet module<a class="headerlink" href="#module-physlearn.NeuralNet.SubNet" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.NeuralNet.SubNet.SubNet">
+<em class="property">class </em><code class="descclassname">physlearn.NeuralNet.SubNet.</code><code class="descname">SubNet</code><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>amount_of_units</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.add_input_layer">
+<code class="descname">add_input_layer</code><span class="sig-paren">(</span><em>amount_of_units</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.add_input_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.add_input_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.add_output_layer">
+<code class="descname">add_output_layer</code><span class="sig-paren">(</span><em>amount_of_units</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.add_output_layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.add_output_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.amount_of_layers">
+<code class="descname">amount_of_layers</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.amount_of_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.amount_of_outputs">
+<code class="descname">amount_of_outputs</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.amount_of_outputs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.design">
+<code class="descname">design</code><em class="property"> = []</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.design" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.input_layer">
+<code class="descname">input_layer</code><em class="property"> = ()</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.input_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.input_set">
+<code class="descname">input_set</code><em class="property"> = False</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.input_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.output_activation_func">
+<code class="descname">output_activation_func</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.output_activation_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.output_layer">
+<code class="descname">output_layer</code><em class="property"> = ()</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.output_layer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.output_set">
+<code class="descname">output_set</code><em class="property"> = False</em><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.output_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.return_amount_of_layers">
+<code class="descname">return_amount_of_layers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.return_amount_of_layers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.return_amount_of_layers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.return_amount_of_neurons">
+<code class="descname">return_amount_of_neurons</code><span class="sig-paren">(</span><em>layer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.return_amount_of_neurons"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.return_amount_of_neurons" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.return_input_set">
+<code class="descname">return_input_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.return_input_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.return_input_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.return_output_set">
+<code class="descname">return_output_set</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.return_output_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.return_output_set" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.NeuralNet.SubNet.SubNet.return_sizes">
+<code class="descname">return_sizes</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/NeuralNet/SubNet.html#SubNet.return_sizes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.NeuralNet.SubNet.SubNet.return_sizes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.NeuralNet">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-physlearn.NeuralNet" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/physlearn.NeuralNet.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

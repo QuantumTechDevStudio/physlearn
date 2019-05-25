@@ -1,0 +1,484 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>physlearn.Optimizer.NelderMead package &#8212; physlearn  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="physlearn.Optimizer.DifferentialEvolution package" href="physlearn.Optimizer.DifferentialEvolution.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="physlearn-optimizer-neldermead-package">
+<h1>physlearn.Optimizer.NelderMead package<a class="headerlink" href="#physlearn-optimizer-neldermead-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-physlearn.Optimizer.NelderMead.NelderMead">
+<span id="physlearn-optimizer-neldermead-neldermead-module"></span><h2>physlearn.Optimizer.NelderMead.NelderMead module<a class="headerlink" href="#module-physlearn.Optimizer.NelderMead.NelderMead" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead.NelderMead">
+<em class="property">class </em><code class="descclassname">physlearn.Optimizer.NelderMead.NelderMead.</code><code class="descname">NelderMead</code><span class="sig-paren">(</span><em>min_element=-1</em>, <em>max_element=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMead.html#NelderMead"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead.NelderMead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract" title="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract"><code class="xref py py-class docutils literal"><span class="pre">physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract</span></code></a></p>
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead.NelderMead.calc_func">
+<code class="descname">calc_func</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMead.html#NelderMead.calc_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead.NelderMead.calc_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.Optimizer.NelderMead.NelderMeadAbstract">
+<span id="physlearn-optimizer-neldermead-neldermeadabstract-module"></span><h2>physlearn.Optimizer.NelderMead.NelderMeadAbstract module<a class="headerlink" href="#module-physlearn.Optimizer.NelderMead.NelderMeadAbstract" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract">
+<em class="property">class </em><code class="descclassname">physlearn.Optimizer.NelderMead.NelderMeadAbstract.</code><code class="descname">NelderMeadAbstract</code><span class="sig-paren">(</span><em>min_element=-1</em>, <em>max_element=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="physlearn.Optimizer.html#physlearn.Optimizer.OptimizerAbstract.OptimizerAbstract" title="physlearn.Optimizer.OptimizerAbstract.OptimizerAbstract"><code class="xref py py-class docutils literal"><span class="pre">physlearn.Optimizer.OptimizerAbstract.OptimizerAbstract</span></code></a></p>
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.alpha">
+<code class="descname">alpha</code><em class="property"> = 1</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.alpha" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.amount_of_dots">
+<code class="descname">amount_of_dots</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.amount_of_dots" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.average">
+<em class="property">static </em><code class="descname">average</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.average"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.average" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.beta">
+<code class="descname">beta</code><em class="property"> = 0.5</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.beta" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.break_point">
+<code class="descname">break_point</code><em class="property"> = -1</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.break_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calc_func">
+<code class="descname">calc_func</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.calc_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calc_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_center">
+<code class="descname">calculate_center</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.calculate_center"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_compressed_point">
+<code class="descname">calculate_compressed_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.calculate_compressed_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_compressed_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_reflected_point">
+<code class="descname">calculate_reflected_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.calculate_reflected_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_reflected_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_stretched_point">
+<code class="descname">calculate_stretched_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.calculate_stretched_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.calculate_stretched_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.compress_simplex">
+<code class="descname">compress_simplex</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.compress_simplex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.compress_simplex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.create_points">
+<code class="descname">create_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.create_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.create_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.current_best_point">
+<code class="descname">current_best_point</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.current_best_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.dim">
+<code class="descname">dim</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.dot_str">
+<code class="descname">dot_str</code><em class="property"> = ''</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.dot_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.epsilon">
+<code class="descname">epsilon</code><em class="property"> = 0.5</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.epsilon" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.find_points">
+<code class="descname">find_points</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.find_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.find_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.func">
+<code class="descname">func</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.g_index">
+<code class="descname">g_index</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.g_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.gamma">
+<code class="descname">gamma</code><em class="property"> = 2</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.gamma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.h_index">
+<code class="descname">h_index</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.h_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.iteration">
+<code class="descname">iteration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.iteration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.iteration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.l_index">
+<code class="descname">l_index</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.l_index" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.max_element">
+<code class="descname">max_element</code><em class="property"> = 1</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.max_element" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.min_element">
+<code class="descname">min_element</code><em class="property"> = -1</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.min_element" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>func</em>, <em>dim</em>, <em>end_cond</em>, <em>min_cost=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.optimize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.parse_params">
+<code class="descname">parse_params</code><span class="sig-paren">(</span><em>params_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.parse_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.parse_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.percent_done">
+<code class="descname">percent_done</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.percent_done" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.print_str">
+<code class="descname">print_str</code><em class="property"> = ''</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.print_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.return_method_types">
+<code class="descname">return_method_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.return_method_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.return_method_types" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.return_types_list">
+<code class="descname">return_types_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.return_types_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.return_types_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.search_depth">
+<code class="descname">search_depth</code><em class="property"> = 100</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.search_depth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.set_epsilon_and_sd">
+<code class="descname">set_epsilon_and_sd</code><span class="sig-paren">(</span><em>epsilon</em>, <em>search_depth</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.set_epsilon_and_sd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.set_epsilon_and_sd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.set_params">
+<code class="descname">set_params</code><span class="sig-paren">(</span><em>alpha</em>, <em>beta</em>, <em>gamma</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.set_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.set_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.speed">
+<code class="descname">speed</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.speed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.start_time">
+<code class="descname">start_time</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.start_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.update_pb_iter">
+<code class="descname">update_pb_iter</code><em class="property"> = 1000</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.update_pb_iter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.update_progress_bar">
+<code class="descname">update_progress_bar</code><span class="sig-paren">(</span><em>i</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.update_progress_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.update_progress_bar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.variance">
+<em class="property">static </em><code class="descname">variance</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadAbstract.html#NelderMeadAbstract.variance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.variance" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.x_center">
+<code class="descname">x_center</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.x_center" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.x_points">
+<code class="descname">x_points</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.x_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.x_reflected">
+<code class="descname">x_reflected</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.x_reflected" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.y_points">
+<code class="descname">y_points</code><em class="property"> = None</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract.y_points" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.Optimizer.NelderMead.NelderMeadCtypes">
+<span id="physlearn-optimizer-neldermead-neldermeadctypes-module"></span><h2>physlearn.Optimizer.NelderMead.NelderMeadCtypes module<a class="headerlink" href="#module-physlearn.Optimizer.NelderMead.NelderMeadCtypes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes">
+<em class="property">class </em><code class="descclassname">physlearn.Optimizer.NelderMead.NelderMeadCtypes.</code><code class="descname">NelderMeadCtypes</code><span class="sig-paren">(</span><em>min_element=-1</em>, <em>max_element=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadCtypes.html#NelderMeadCtypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract" title="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract"><code class="xref py py-class docutils literal"><span class="pre">physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract</span></code></a></p>
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_free_simplex">
+<code class="descname">c_free_simplex</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_free_simplex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_iteration">
+<code class="descname">c_iteration</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_iteration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_optimize">
+<code class="descname">c_optimize</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_optimize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_return_best_point">
+<code class="descname">c_return_best_point</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_return_best_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_set_params">
+<code class="descname">c_set_params</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_set_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_set_simplex">
+<code class="descname">c_set_simplex</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.c_set_simplex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.calc_func">
+<code class="descname">calc_func</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadCtypes.html#NelderMeadCtypes.calc_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.calc_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.lib">
+<code class="descname">lib</code><em class="property"> = &lt;CDLL '/home/andrey/CLionProjects/NelderMead/library.so', handle 5648ba3ca420&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.lib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>func</em>, <em>dim</em>, <em>end_cond</em>, <em>min_cost=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadCtypes.html#NelderMeadCtypes.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.optimize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.prev_update_time">
+<code class="descname">prev_update_time</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.prev_update_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.update_progress_b">
+<code class="descname">update_progress_b</code><span class="sig-paren">(</span><em>i</em>, <em>speed</em>, <em>percent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadCtypes.html#NelderMeadCtypes.update_progress_b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadCtypes.NelderMeadCtypes.update_progress_b" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.Optimizer.NelderMead.NelderMeadWQG">
+<span id="physlearn-optimizer-neldermead-neldermeadwqg-module"></span><h2>physlearn.Optimizer.NelderMead.NelderMeadWQG module<a class="headerlink" href="#module-physlearn.Optimizer.NelderMead.NelderMeadWQG" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG">
+<em class="property">class </em><code class="descclassname">physlearn.Optimizer.NelderMead.NelderMeadWQG.</code><code class="descname">NelderMeadWQG</code><span class="sig-paren">(</span><em>min_element=-1</em>, <em>max_element=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadWQG.html#NelderMeadWQG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract" title="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract"><code class="xref py py-class docutils literal"><span class="pre">physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract</span></code></a></p>
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.calc_func">
+<code class="descname">calc_func</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadWQG.html#NelderMeadWQG.calc_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.calc_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.calculate_grad">
+<code class="descname">calculate_grad</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadWQG.html#NelderMeadWQG.calculate_grad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.calculate_grad" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.calculate_reflected_point">
+<code class="descname">calculate_reflected_point</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadWQG.html#NelderMeadWQG.calculate_reflected_point"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.calculate_reflected_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.set_sigma">
+<code class="descname">set_sigma</code><span class="sig-paren">(</span><em>sigma</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMeadWQG.html#NelderMeadWQG.set_sigma"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.set_sigma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.sigma">
+<code class="descname">sigma</code><em class="property"> = 0</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMeadWQG.NelderMeadWQG.sigma" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.Optimizer.NelderMead.NelderMead_ctypes">
+<span id="physlearn-optimizer-neldermead-neldermead-ctypes-module"></span><h2>physlearn.Optimizer.NelderMead.NelderMead_ctypes module<a class="headerlink" href="#module-physlearn.Optimizer.NelderMead.NelderMead_ctypes" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes">
+<em class="property">class </em><code class="descclassname">physlearn.Optimizer.NelderMead.NelderMead_ctypes.</code><code class="descname">NelderMeadCtypes</code><span class="sig-paren">(</span><em>min_element=-1</em>, <em>max_element=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMead_ctypes.html#NelderMeadCtypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract" title="physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract"><code class="xref py py-class docutils literal"><span class="pre">physlearn.Optimizer.NelderMead.NelderMeadAbstract.NelderMeadAbstract</span></code></a></p>
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_free_simplex">
+<code class="descname">c_free_simplex</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_free_simplex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_iteration">
+<code class="descname">c_iteration</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_iteration" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_return_best_point">
+<code class="descname">c_return_best_point</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_return_best_point" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_set_params">
+<code class="descname">c_set_params</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_set_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_set_simplex">
+<code class="descname">c_set_simplex</code><em class="property"> = &lt;_FuncPtr object&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.c_set_simplex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.calc_func">
+<code class="descname">calc_func</code><span class="sig-paren">(</span><em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMead_ctypes.html#NelderMeadCtypes.calc_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.calc_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.lib">
+<code class="descname">lib</code><em class="property"> = &lt;CDLL '/home/andrey/CLionProjects/NelderMead/library.so', handle 5648ba3ca420&gt;</em><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.lib" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.optimize">
+<code class="descname">optimize</code><span class="sig-paren">(</span><em>func</em>, <em>dim</em>, <em>end_cond</em>, <em>min_cost=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/physlearn/Optimizer/NelderMead/NelderMead_ctypes.html#NelderMeadCtypes.optimize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#physlearn.Optimizer.NelderMead.NelderMead_ctypes.NelderMeadCtypes.optimize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-physlearn.Optimizer.NelderMead">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-physlearn.Optimizer.NelderMead" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="physlearn.html">physlearn package</a><ul>
+  <li><a href="physlearn.Optimizer.html">physlearn.Optimizer package</a><ul>
+      <li>Previous: <a href="physlearn.Optimizer.DifferentialEvolution.html" title="previous chapter">physlearn.Optimizer.DifferentialEvolution package</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/physlearn.Optimizer.NelderMead.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

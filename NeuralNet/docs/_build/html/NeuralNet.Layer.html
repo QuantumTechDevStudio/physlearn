@@ -1,0 +1,150 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>NeuralNet.Layer package &#8212; NeuralNet  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="neuralnet-layer-package">
+<h1>NeuralNet.Layer package<a class="headerlink" href="#neuralnet-layer-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-NeuralNet.Layer.Layer">
+<span id="neuralnet-layer-layer-module"></span><h2>NeuralNet.Layer.Layer module<a class="headerlink" href="#module-NeuralNet.Layer.Layer" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="NeuralNet.Layer.Layer.Layer">
+<em class="property">class </em><code class="descclassname">NeuralNet.Layer.Layer.</code><code class="descname">Layer</code><span class="sig-paren">(</span><em>shape</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NeuralNet/Layer/Layer.html#Layer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="NeuralNet.Layer.Layer.Layer.activation_func">
+<code class="descname">activation_func</code><em class="property"> = None</em><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer.activation_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="NeuralNet.Layer.Layer.Layer.bias_dim">
+<code class="descname">bias_dim</code><em class="property"> = 0</em><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer.bias_dim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="NeuralNet.Layer.Layer.Layer.bias_vector">
+<code class="descname">bias_vector</code><em class="property"> = None</em><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer.bias_vector" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="NeuralNet.Layer.Layer.Layer.roll_matrix">
+<code class="descname">roll_matrix</code><span class="sig-paren">(</span><em>weight_unroll_vector</em>, <em>bias_unroll_vector</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NeuralNet/Layer/Layer.html#Layer.roll_matrix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer.roll_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="NeuralNet.Layer.Layer.Layer.weight_matrix">
+<code class="descname">weight_matrix</code><em class="property"> = None</em><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer.weight_matrix" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="NeuralNet.Layer.Layer.Layer.weight_matrix_shape">
+<code class="descname">weight_matrix_shape</code><em class="property"> = None</em><a class="headerlink" href="#NeuralNet.Layer.Layer.Layer.weight_matrix_shape" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-NeuralNet.Layer.LayerBlocks">
+<span id="neuralnet-layer-layerblocks-module"></span><h2>NeuralNet.Layer.LayerBlocks module<a class="headerlink" href="#module-NeuralNet.Layer.LayerBlocks" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="NeuralNet.Layer.LayerBlocks.LayerBlocks">
+<em class="property">class </em><code class="descclassname">NeuralNet.Layer.LayerBlocks.</code><code class="descname">LayerBlocks</code><span class="sig-paren">(</span><em>shape</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NeuralNet/Layer/LayerBlocks.html#LayerBlocks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NeuralNet.Layer.LayerBlocks.LayerBlocks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">physlearn.NeuralNet.Layer.Layer.Layer</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-NeuralNet.Layer.LayerFC">
+<span id="neuralnet-layer-layerfc-module"></span><h2>NeuralNet.Layer.LayerFC module<a class="headerlink" href="#module-NeuralNet.Layer.LayerFC" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="NeuralNet.Layer.LayerFC.LayerFC">
+<em class="property">class </em><code class="descclassname">NeuralNet.Layer.LayerFC.</code><code class="descname">LayerFC</code><span class="sig-paren">(</span><em>shape</em>, <em>activation_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/NeuralNet/Layer/LayerFC.html#LayerFC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#NeuralNet.Layer.LayerFC.LayerFC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">physlearn.NeuralNet.Layer.Layer.Layer</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-NeuralNet.Layer">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-NeuralNet.Layer" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Author.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/NeuralNet.Layer.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
